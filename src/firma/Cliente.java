@@ -4,13 +4,9 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.security.auth.kerberos.KerberosTicket;
 import java.math.BigInteger;
 import java.security.*;
-import java.security.interfaces.RSAKey;
 import java.util.*;
-
-import static sun.security.rsa.RSAUtil.KeyType.RSA;
 
 public class Cliente  {
 
@@ -27,7 +23,6 @@ public class Cliente  {
         if(r<0){
             r=r*-1;
         }
-
         return new BigInteger(new byte[r]);
     }
 
@@ -49,7 +44,7 @@ public class Cliente  {
         return kp.getPrivate();
     }
 
-    public byte[] generateHashRSA(String m, Key publicK, Key privateK) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+    public byte[] generateHashRSA(String m, Key publicK) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
          byte[] h;
 
         Cipher cipher = Cipher.getInstance("RSA");
@@ -60,7 +55,6 @@ public class Cliente  {
     }
 
     /**
-     *
      * @param k     Factor de opacidad
      * @param e     Exponente público del que firma
      * @param h     Hash del mensaje
@@ -69,7 +63,7 @@ public class Cliente  {
 
     public void generateX(Byte[] k, byte[] e, byte[] h){
         byte[] x;
-        return (k^e)*h;
+       // return (k^e)*h;
 
     }
 

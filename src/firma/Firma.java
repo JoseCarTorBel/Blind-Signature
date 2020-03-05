@@ -10,21 +10,6 @@ public class Firma {
 
     }
 
-    public byte[] makeHash(String document){
-
-        byte[] hash = new byte[0];
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            hash = digest.digest(document.getBytes(StandardCharsets.UTF_8));
-        }catch (Exception ex){
-            System.out.println("HASH FAILED");
-        }
-        return hash;
-    }
-
-
-
-
 
 
 
