@@ -3,11 +3,6 @@ package comun;
 import java.net.*;
 import java.io.*;
 
-/**
- * A wrapper class of Socket which contains 
- * methods for sending and receiving messages
- * @author M. L. Liu
- */
 public class MyStreamSocket extends Socket {
    private Socket  socket;
    private BufferedReader input;
@@ -24,36 +19,49 @@ public class MyStreamSocket extends Socket {
       this.socket = socket;
       String host = socket.getInetAddress().getHostName();
       System.out.println("Creado socket con host: " + host);
-      setStreams( );
+      setStreams();
    }
 
    private void setStreams( ) throws IOException{
-      // get an input stream for reading from the data socket
+
       InputStream inStream = socket.getInputStream();
       input = new BufferedReader(new InputStreamReader(inStream));
       OutputStream outStream = socket.getOutputStream();
-      // create a PrinterWriter object for character-mode output
       output = new PrintWriter(new OutputStreamWriter(outStream));
    }
 
-   public void sendMessage(String message)
-   		          throws IOException {	
-      output.print(message + "\n");   
-      //The ensuing flush method call is necessary for the data to
-      // be written to the socket data stream before the
-      // socket is closed.
-      output.flush();               
-   } // end sendMessage
+   public void sendMessage(byte[] messageArray, int start, int len) throws IOException {
 
-   public String receiveMessage( )
-		throws IOException {	
-      // read a line from the data stream
-      String message = input.readLine( );  
-      return message;
-   } //end receiveMessage
+      if(len<0) {
+         throw new IllegalArgumentException("Negative length");
+      }
+      if(start<0 || start>=messageArray.length){
+         throw new IndexOutOfBoundsException("Out of bounds: "+start);
+      }
 
-   public void close( )
-		throws IOException {	
+      OutputStream out = socket.getOutputStream();
+      DataOutputStream dataOut =new DataOutputStream(out);
+
+      dataOut.writeInt(len);
+      if(len>0) {
+         dataOut.write(messageArray, start, len);
+      }
+   }
+
+   public byte[] receiveMessage( ) throws IOException {
+      InputStream in = socket.getInputStream();
+      DataInputStream dataIn = new DataInputStream(in);
+
+      int len = dataIn.readInt();
+      byte[] data = new byte[len];
+
+      if(len>0){
+         dataIn.readFully(data);
+      }
+      return data;
+   }
+
+   public void close( ) throws IOException {
       socket.close( );
    }
 } 

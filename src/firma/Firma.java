@@ -1,48 +1,69 @@
 package firma;
+import javax.swing.*;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 
 
 public class Firma {
 
     public static void main(String[] args) {
-        String documentoStr = "0xe04fd020ea3a6910a2d808002b30309d";
-        byte[] documentoByte = documentoStr.getBytes();
-        BigInteger documento = new BigInteger(documentoByte);
 
+        String originalInput = "test input";
+        byte[] encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes()).getBytes();
+
+        BigInteger inte = new BigInteger(encodedString);
+
+        encodedString=inte.toByteArray();
+
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        String decodedString = new String(decodedBytes);
+        System.out.println(decodedString);
+
+
+
+
+
+/*
         Cliente client = new Cliente();
         Server server = new Server();
 
-        BigInteger n = new BigInteger("02b3030");
+        // 1. Generamos K
         BigInteger k = client.generateOpacityFactorK();
-        try {
-            client.initKeyGenerator();
-        }catch (NoSuchAlgorithmException ex){
-            System.out.println("No se ha reconocido el algoritmo");
-            return;
-        }
 
+        System.out.println("Mensaje: "+documento);
+
+        BigInteger h = null;
         try {
-            client.generateHashRSA(documentoByte, client.getPublicKey());
+            // 2. Generamos el hash
+            h = client.generateHash(documentoByte);
+            System.out.println("Hash mensaje: "+h);
         }catch (Exception ex){
-            System.out.println("Error generando hash");
+            System.out.println("Fallo creando el hash");
+            System.exit(1);
         }
 
-        BigInteger k= client.generateOpacityFactorK();
+        // Server envía E
+        BigInteger e = server.getE();
 
-        int e = server.generateE();
-        BigInteger x = client.generateX(documento,k,e,n);
+        // 3. Cliente hace X
+        BigInteger x = client.generateX(h,e);
 
-        //BigInteger y = server.blindSignature(x,)
+        // 4. Server firma
+        BigInteger y = server.blindSignature(x);
+        System.out.println("Objeto firmado: "+y);
+
+        //5. Verificar firma
+        byte[] firma = client.descipher(y);
+        System.out.println("Documento firmado: "+firma.toString());
+
+
+
+*/
+
+
+
 
 
 
     }
-
-
-
-
-
 }

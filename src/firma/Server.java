@@ -1,31 +1,33 @@
 package firma;
 
 import java.math.BigInteger;
-import java.util.Random;
+
+/**
+ * Envía e para la x
+ */
 
 public class Server {
 
-    public Server(){ }
+    private RSA rsa;
 
-    // De momento generamos este exponente yaván.
-    public int generateE(){
-        return 8;
+    public Server() {
+        rsa = new RSA(1000);
     }
 
     /**
-     *
      * @param x Factor a exponenciar
-     * @param d
-     * @param n Modulo
      * @return
      */
-    public BigInteger blindSignature(BigInteger x, BigInteger d, BigInteger n){
+    public BigInteger blindSignature(BigInteger x){
+        BigInteger y = x.modPow(rsa.getd(),rsa.getn());
 
-        BigInteger y = x.modPow(d,n);
         return y;
     }
 
-
-
-
+    public BigInteger getE(){
+        return rsa.gete();
+    }
 }
+
+
+
