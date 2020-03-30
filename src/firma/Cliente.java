@@ -25,7 +25,7 @@ public class Cliente  {
     RSA rsa ;
 
     public Cliente(){
-        rsa = new RSA(20);}
+        rsa = new RSA(20,"jose");}
 
     /**
      * Genera el factor de opacidad.

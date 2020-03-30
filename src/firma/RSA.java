@@ -12,13 +12,12 @@ public class RSA {
     private BigInteger e;
     private BigInteger n;
 
-    RSA(int num){
+    public RSA(int num, String f){
         BigInteger p =  BigInteger.probablePrime(num/2,random);
         BigInteger q = BigInteger.probablePrime(num/2,random);
         BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
 
         n = p.multiply(q);
-        String f = "65748595spas";
         e = new BigInteger(f.getBytes());
         d=e.modInverse(phi);
     }
@@ -34,4 +33,6 @@ public class RSA {
     public BigInteger getd(){return d;}
     public BigInteger gete(){return e;}
     public BigInteger getn(){return n;}
+
+
 }

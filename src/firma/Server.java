@@ -11,7 +11,7 @@ public class Server {
     private RSA rsa;
 
     public Server() {
-        rsa = new RSA(1000);
+        rsa = new RSA(1000,"f");
     }
 
     /**
