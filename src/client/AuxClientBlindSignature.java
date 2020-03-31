@@ -21,16 +21,18 @@ public class AuxClientBlindSignature {
             serverPort = Integer.parseInt(portNum);
             mySocket = new MyStreamSocket(serverHost,serverPort);
 
-            System.out.println("Conexión establecida");
+            System.out.println("[CLIENTE]\tConexión establecida con "+serverHost+" en puerto "+serverPort);
 
         }catch(SocketException e) {
-            System.out.println("ERROR: Error en la creación de socket");
-        }catch(UnknownHostException e) {
-            System.out.println("ERROR: Host no reconocido");
-        }catch(IOException e) {
-            System.out.println("ERROR: Error en la comunicación");
-        }finally {
+            System.out.println("[ERROR]\tError en la creación de socket");
             System.exit(1);
+        }catch(UnknownHostException e) {
+            System.out.println("[ERROR]\tHost no reconocido");
+            System.exit(1);
+        }catch(IOException e) {
+            System.out.println("[ERROR]\tError en la comunicación");
+            System.exit(1);
+
         }
     }
 

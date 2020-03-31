@@ -16,8 +16,10 @@ public class RSA {
         BigInteger p =  BigInteger.probablePrime(num/2,random);
         BigInteger q = BigInteger.probablePrime(num/2,random);
         BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
+        System.out.println(phi);
 
         n = p.multiply(q);
+        // TODO cambiar esto falla.
         e = new BigInteger(f.getBytes());
         d=e.modInverse(phi);
     }

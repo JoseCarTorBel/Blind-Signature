@@ -27,6 +27,7 @@ public class ThreadServerBlindSignature implements Runnable{
 			while (!done) {
 				op= Base64.getDecoder().decode(myDataSocket.receiveMessage());
 				String opcion = new String(op);
+				System.out.println("[SERVER]\tOpcion recibida "+opcion);
 
 				if(opcion.equals(PIDE_E)){
 					byte[] e = rsaAlgorithm.gete().toByteArray();
@@ -35,7 +36,6 @@ public class ThreadServerBlindSignature implements Runnable{
 					myDataSocket.sendMessage(e,0,e.length);
 				}else if (opcion.equals(RECIBE_FICHERO)){
 					byte[] fichero = myDataSocket.receiveMessage();
-					// TODO AÑADIR CÓDIGO PARA HACER FIRMA TOTALMENTE CIEGA
 					byte[] ficheroFirmado = realizaFirma(fichero);
 					myDataSocket.sendMessage(ficheroFirmado,0,ficheroFirmado.length);
 
