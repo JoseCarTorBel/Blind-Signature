@@ -37,14 +37,8 @@ public class ClientBlindSignature {
         System.out.println("###################################");
         System.out.println("\n");
 
-        System.out.println("Semilla generación de llaves: ");
-        int num = Integer.parseInt(teclado.next());
-
-        System.out.println("Semilla f: ");
-        String f = teclado.next();
-
-
-        rsaAlgorithm=new RSA(num,f);
+        System.out.println("[CLIENTE]\tCrea RSA.");
+        rsaAlgorithm=new RSA();
 
         System.out.println("Fichero a firmar");
         String fichero =teclado.next();
@@ -57,8 +51,7 @@ public class ClientBlindSignature {
         BigInteger x = generateX(ficheroHash,eServer);
 
         /* Destruir K y verificar */
-
-
+        this.k=null;
 
     teclado.close();
         try {
@@ -69,14 +62,16 @@ public class ClientBlindSignature {
 
     }
 
-    private void enviaFichero(byte[] fichero){
+    private byte[] enviaFichero(byte[] fichero){
+        byte[] ficheroFirmado = new byte[0];
         try{
-            socket.enviaPeticion("1");
-            socket.enviaFichero(fichero);
+            ficheroFirmado=socket.enviaFichero(fichero);
+            return ficheroFirmado;
         } catch (IOException e) {
             System.out.println("[ ERROR ]\tEnviando mensaje. "+e);
             System.exit(1);
         }
+        return ficheroFirmado;
     }
 
     private BigInteger recibeE() {
@@ -87,8 +82,12 @@ public class ClientBlindSignature {
             System.out.println("[ ERROR ]\tRecibiendo e. "+ex);
             System.exit(1);
         }
-        return new BigInteger(e);
+        BigInteger eInt =  new BigInteger(e);
+        System.out.println("[CLIENTE]\tRecibe e: "+eInt);
+        return eInt;
     }
+
+
 
     private void generateOpacityFactorK(){
         int r = (2^(new Random(200).nextInt()));
@@ -100,8 +99,8 @@ public class ClientBlindSignature {
     }
 
     private BigInteger creaHashFichero(String fichero){
-        byte[] encodedString = Base64.getEncoder().encodeToString(fichero.getBytes()).getBytes();
-        BigInteger inte = new BigInteger(encodedString);
+
+        BigInteger inte = stringToBigInteger(fichero);
         return rsaAlgorithm.decrypt(inte);
     }
 
@@ -114,6 +113,20 @@ public class ClientBlindSignature {
     public byte[] descipher(BigInteger y)  {
         byte[] original = Base64.getDecoder().decode(rsaAlgorithm.decrypt(y).toByteArray());
         return original;
+    }
+
+//    public boolean checkSignature(){
+//
+//    }
+
+
+    /** Convertir de byte a Integer
+     *
+     */
+    private BigInteger stringToBigInteger(String convert){
+        byte[] encodedString = Base64.getEncoder().encodeToString(convert.getBytes()).getBytes();
+        BigInteger inte = new BigInteger(encodedString);
+        return inte;
     }
 }
 

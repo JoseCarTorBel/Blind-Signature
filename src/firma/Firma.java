@@ -10,12 +10,16 @@ public class Firma {
 
         String originalInput = "test input";
         byte[] encodedString = Base64.getEncoder().encodeToString(originalInput.getBytes()).getBytes();
+        System.out.println("Byte -> "+encodedString);
 
         BigInteger inte = new BigInteger(encodedString);
+        System.out.println("BigInteger -> "+inte);
 
         encodedString=inte.toByteArray();
-
         byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+
+
+
         String decodedString = new String(decodedBytes);
         System.out.println(decodedString);
 

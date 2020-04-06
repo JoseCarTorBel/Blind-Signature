@@ -15,6 +15,8 @@ public class AuxClientBlindSignature {
     private InetAddress serverHost;
     private int serverPort;
 
+    private String PEDIR_E="0",ENVIA_FICHERO="1",FINALIZA="2";
+
     AuxClientBlindSignature(String hostName, String portNum) {
         try{
             serverHost = InetAddress.getByName(hostName);
@@ -35,27 +37,44 @@ public class AuxClientBlindSignature {
 
         }
     }
-
-    public byte[] pideE() throws IOException {
-        byte[] encodedString = Base64.getEncoder().encodeToString("0".getBytes()).getBytes();
-        mySocket.sendMessage(encodedString,0,encodedString.length);
-
-        return mySocket.receiveMessage();
-
-    }
-
-    public void enviaPeticion(String peticion) throws IOException {
+    // ******** IMPLEMENTACIÓN DE LA FIRMA TOTALMENTE CIEGA *******
+    private void enviaPeticion(String peticion) throws IOException {
         byte[] encodedString = Base64.getEncoder().encodeToString(peticion.getBytes()).getBytes();
         mySocket.sendMessage(encodedString,0,encodedString.length);
     }
 
-    public void enviaFicheros(byte[][] ficheros) throws IOException {
-
-        for(int i =0; i<ficheros.length; i++) {
-            mySocket.sendMessage(ficheros[i], 0, ficheros[i].length);
-        }
+    /**
+     * @return Devuelve el la E del servidor
+     * @throws IOException
+     */
+    public byte[] pideE() throws IOException {
+        enviaPeticion(PEDIR_E);
+        return mySocket.receiveMessage();
     }
 
+    /**
+     * Envía el fichero y el servidor responde con el fichero firmado
+     * @param fichero
+     * @return Fichero firmado
+     * @throws IOException
+     */
+    public byte[] enviaFichero(byte[] fichero) throws IOException {
+        enviaPeticion(ENVIA_FICHERO);
+        mySocket.sendMessage(fichero,0,fichero.length);
+        return mySocket.receiveMessage();
+    }
+
+    public void finaliza() throws IOException {
+        enviaPeticion(FINALIZA);
+        mySocket.close();
+    }
+
+
+
+
+
+    // TODO this:
+    //***************** FIRMA PARCIALMENTE CIEGA, NO IMPLEMENTADO TODAVÁIA: ********
     public int recibePeticionFichero() {
 
         byte[] respuesta = new byte[0];
@@ -69,20 +88,12 @@ public class AuxClientBlindSignature {
         return resp.intValue();
     }
 
-    public void enviaFichero(byte[] fichero) throws IOException {
-        mySocket.sendMessage(fichero,0,fichero.length);
+
+    public void enviaFicheros(byte[][] ficheros) throws IOException {
+
+        for(int i =0; i<ficheros.length; i++) {
+            mySocket.sendMessage(ficheros[i], 0, ficheros[i].length);
+        }
     }
-
-
-    public void finaliza() throws IOException {
-        byte[] encodedString = Base64.getEncoder().encodeToString("3".getBytes()).getBytes();
-        mySocket.sendMessage(encodedString,0,encodedString.length);
-        mySocket.close();
-    }
-
-
-
-
-
 
 }
