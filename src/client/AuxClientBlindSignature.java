@@ -61,7 +61,7 @@ public class AuxClientBlindSignature {
     public byte[] enviaFichero(byte[] fichero) throws IOException {
         enviaPeticion(ENVIA_FICHERO);
         mySocket.sendMessage(fichero,0,fichero.length);
-        return mySocket.receiveMessage();
+        return Base64.getDecoder().decode(mySocket.receiveMessage());
     }
 
     public void finaliza() throws IOException {

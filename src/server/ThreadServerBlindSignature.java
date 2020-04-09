@@ -33,14 +33,15 @@ public class ThreadServerBlindSignature implements Runnable {
                 if (opcion.equals(PIDE_E)) {
                     // Pasamos a byte el big integer
                     BigInteger e = rsaAlgorithm.gete();
+                    System.out.println("E -> "+e);
 
-                    byte[] eByte = rsaAlgorithm.gete().toByteArray();
-                    byte[] eSended = Base64.getDecoder().decode(eByte);
-
-                    myDataSocket.sendMessage(eSended, 0, eByte.length);
+                    byte[] eSended = e.toByteArray();
+                  //  byte[] eSended = Base64.getDecoder().decode(String.valueOf(e));
+                    System.out.println(eSended);
+                    myDataSocket.sendMessage(eSended, 0, eSended.length);
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
-                    byte[] fichero = myDataSocket.receiveMessage();
+                    byte[] fichero  = Base64.getDecoder().decode(myDataSocket.receiveMessage());
                     byte[] ficheroFirmado = realizaFirma(fichero);
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
@@ -58,11 +59,10 @@ public class ThreadServerBlindSignature implements Runnable {
 
 
     private byte[] realizaFirma(byte[] fichero) {
+        System.out.println("[SERVER]\nRealiza firma.");
         BigInteger x = new BigInteger(fichero);
         BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
-
         byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
-
         return ySigned;
     }
 

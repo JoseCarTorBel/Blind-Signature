@@ -2,6 +2,7 @@ package client;
 
 import firma.RSA;
 
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Base64;
@@ -49,7 +50,8 @@ public class ClientBlindSignature {
         BigInteger eServer = recibeE();
 
         BigInteger x = generateX(ficheroHash,eServer);
-
+        // TODO Hacer envío de la X
+        //TODO validar firma.
         /* Destruir K y verificar */
         this.k=null;
 
@@ -78,18 +80,20 @@ public class ClientBlindSignature {
         byte[] e = new byte[0];
         try {
             e = socket.pideE();
+            System.out.println(e);
         } catch (IOException ex) {
-            System.out.println("[ ERROR ]\tRecibiendo e. "+ex);
+           // System.out.println("[ ERROR ]\tRecibiendo e. "+ex);
             System.exit(1);
         }
         BigInteger eInt =  new BigInteger(e);
-        System.out.println("[CLIENTE]\tRecibe e: "+eInt);
+        System.out.println("[CLIENTE]\tRecibe e del servidor.");
         return eInt;
     }
 
 
 
     private void generateOpacityFactorK(){
+        System.out.println("[CLIENTE]\tGenera el factor K. ");
         int r = (2^(new Random(200).nextInt()));
         if(r<0){
             r=r*-1;
@@ -99,13 +103,14 @@ public class ClientBlindSignature {
     }
 
     private BigInteger creaHashFichero(String fichero){
-
+        System.out.println("[CLIENTE]\tRealiza hash.");
         BigInteger inte = stringToBigInteger(fichero);
         return rsaAlgorithm.decrypt(inte);
     }
 
 
     private BigInteger generateX(BigInteger hmsg, BigInteger e){
+        System.out.println("[CLIENTE]\tGenera X.");
         BigInteger x = hmsg.multiply(k.modPow(e,rsaAlgorithm.getn())).mod(rsaAlgorithm.getn());
         return x;
     }
