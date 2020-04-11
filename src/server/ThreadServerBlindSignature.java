@@ -41,7 +41,8 @@ public class ThreadServerBlindSignature implements Runnable {
                     myDataSocket.sendMessage(eSended, 0, eSended.length);
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
-                    byte[] fichero  = Base64.getDecoder().decode(myDataSocket.receiveMessage());
+                    byte[] fichero  = myDataSocket.receiveMessage();
+                    System.out.println("Fichero:"+new BigInteger(fichero));
                     byte[] ficheroFirmado = realizaFirma(fichero);
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
@@ -62,8 +63,10 @@ public class ThreadServerBlindSignature implements Runnable {
         System.out.println("[SERVER]\nRealiza firma.");
         BigInteger x = new BigInteger(fichero);
         BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
-        byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
-        return ySigned;
+        //byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
+      //  return ySigned;
+        System.out.println("y= "+y);
+        return y.toByteArray();
     }
 
     // TODO implementar la firma parcialmente ciega

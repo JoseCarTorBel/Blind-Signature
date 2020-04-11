@@ -5,6 +5,8 @@ import firma.RSA;
 import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Random;
 import java.util.Scanner;
@@ -40,6 +42,7 @@ public class ClientBlindSignature {
 
         System.out.println("[CLIENTE]\tCrea RSA.");
         rsaAlgorithm=new RSA();
+        System.out.println(rsaAlgorithm.toString());
 
         System.out.println("Fichero a firmar");
         String fichero =teclado.next();
@@ -50,7 +53,11 @@ public class ClientBlindSignature {
         BigInteger eServer = recibeE();
 
         BigInteger x = generateX(ficheroHash,eServer);
-        // TODO Hacer envío de la X
+
+        // Envio de la X
+        enviaFichero(x.toByteArray());
+
+
         //TODO validar firma.
         /* Destruir K y verificar */
         this.k=null;
@@ -64,11 +71,15 @@ public class ClientBlindSignature {
 
     }
 
-    private byte[] enviaFichero(byte[] fichero){
+    private byte[] enviaFichero(byte[] x){
+
         byte[] ficheroFirmado = new byte[0];
         try{
-            ficheroFirmado=socket.enviaFichero(fichero);
+            System.out.println("[CLIENTE]\tEnvía la X.");
+            ficheroFirmado=socket.enviaFichero(x);
+            System.out.println("Firmado: "+new BigInteger(ficheroFirmado));
             return ficheroFirmado;
+
         } catch (IOException e) {
             System.out.println("[ ERROR ]\tEnviando mensaje. "+e);
             System.exit(1);
@@ -80,7 +91,7 @@ public class ClientBlindSignature {
         byte[] e = new byte[0];
         try {
             e = socket.pideE();
-            System.out.println(e);
+         //   System.out.println(e);
         } catch (IOException ex) {
            // System.out.println("[ ERROR ]\tRecibiendo e. "+ex);
             System.exit(1);
@@ -92,14 +103,17 @@ public class ClientBlindSignature {
 
 
 
-    private void generateOpacityFactorK(){
+    private void generateOpacityFactorK()  {
         System.out.println("[CLIENTE]\tGenera el factor K. ");
-        int r = (2^(new Random(200).nextInt()));
-        if(r<0){
-            r=r*-1;
+        Random random;
+        try {
+            random = SecureRandom.getInstance("SHA1PRNG");
+            this.k=new BigInteger(2048,random);
+
+        }catch (NoSuchAlgorithmException ex){
+            System.out.println("[ERROR]\tNot find algorithm "+ex);
+            System.exit(1);
         }
-        this.k=new BigInteger(new byte[r]);
-        //return k;
     }
 
     private BigInteger creaHashFichero(String fichero){
@@ -108,10 +122,12 @@ public class ClientBlindSignature {
         return rsaAlgorithm.decrypt(inte);
     }
 
-
     private BigInteger generateX(BigInteger hmsg, BigInteger e){
         System.out.println("[CLIENTE]\tGenera X.");
+        System.out.println("h: "+hmsg+"\ne: "+e+"\nk: "+k);
+
         BigInteger x = hmsg.multiply(k.modPow(e,rsaAlgorithm.getn())).mod(rsaAlgorithm.getn());
+        System.out.println("La x: "+x);
         return x;
     }
 

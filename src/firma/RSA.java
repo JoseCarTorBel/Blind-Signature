@@ -45,5 +45,8 @@ public class RSA {
     public BigInteger gete(){return e;}
     public BigInteger getn(){return n;}
 
-
+    @Override
+    public String toString() {
+        return "RSA:\nd: "+d+"\ne: "+e+"\nn: "+n;
+    }
 }
