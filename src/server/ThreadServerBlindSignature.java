@@ -2,6 +2,7 @@ package server;
 
 import comun.MyStreamSocket;
 import firma.RSA;
+import sun.awt.X11.XSystemTrayPeer;
 
 import java.math.BigInteger;
 import java.util.Base64;
@@ -9,7 +10,7 @@ import java.util.Base64;
 public class ThreadServerBlindSignature implements Runnable {
     MyStreamSocket myDataSocket;
 
-    private String PIDE_E = "0", RECIBE_FICHERO = "1", RECIBE_FICHEROS = "2";
+    private String PIDE_E = "0", RECIBE_FICHERO = "1", RECIBE_FICHEROS = "2",PIDE_N="3";
 
     private RSA rsaAlgorithm;
 
@@ -41,13 +42,18 @@ public class ThreadServerBlindSignature implements Runnable {
                     myDataSocket.sendMessage(eSended, 0, eSended.length);
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
-                    byte[] fichero  = myDataSocket.receiveMessage();
-                    System.out.println("Fichero:"+new BigInteger(fichero));
+                    byte[] fichero = myDataSocket.receiveMessage();
+                    System.out.println("Fichero:" + new BigInteger(fichero));
                     byte[] ficheroFirmado = realizaFirma(fichero);
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
 
+                }else if(opcion.equals(PIDE_N)){
+                    BigInteger n = rsaAlgorithm.getn();
+                    byte[] nByte = n.toByteArray();
+                    myDataSocket.sendMessage(nByte,0,nByte.length);
                 } else {    /**Termina operación */
+                    System.out.println("[SERVER]\tProceso terminado.\n\tEXIT");
                     myDataSocket.close();
                     done = true;
                 }

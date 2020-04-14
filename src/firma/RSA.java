@@ -26,7 +26,6 @@ public class RSA {
 
         n = p.multiply(q);
         BigInteger phi = (p.subtract(one)).multiply(q.subtract(one));
-        System.out.println(phi);
 
         do e=new BigInteger(phi.bitLength(),random);
         while(e.compareTo(one)<=0 ||  e.compareTo(phi) >= 0 || !e.gcd(phi).equals(BigInteger.ONE));

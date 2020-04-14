@@ -1,5 +1,6 @@
 package client;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import comun.MyStreamSocket;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class AuxClientBlindSignature {
     private InetAddress serverHost;
     private int serverPort;
 
-    private String PEDIR_E="0",ENVIA_FICHERO="1",FINALIZA="2";
+    private String PEDIR_E="0",ENVIA_FICHERO="1",ENVIA_FICHEROS="2",PEDIR_N="3",FINALIZA="4";
 
     AuxClientBlindSignature(String hostName, String portNum) {
         try{
@@ -51,6 +52,13 @@ public class AuxClientBlindSignature {
         enviaPeticion(PEDIR_E);
         return mySocket.receiveMessage();
     }
+
+    public byte[] pideN() throws IOException {
+        enviaPeticion(PEDIR_N);
+        return mySocket.receiveMessage();
+    }
+
+
 
     /**
      * Envía el fichero y el servidor responde con el fichero firmado

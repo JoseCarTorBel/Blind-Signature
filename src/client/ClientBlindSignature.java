@@ -44,41 +44,51 @@ public class ClientBlindSignature {
         rsaAlgorithm=new RSA();
         System.out.println(rsaAlgorithm.toString());
 
+        // Pide fichero
         System.out.println("Fichero a firmar");
         String fichero =teclado.next();
+        teclado.close();
 
         generateOpacityFactorK();
 
         BigInteger ficheroHash = creaHashFichero(fichero);
         BigInteger eServer = recibeE();
+        BigInteger nServer = recibeN();
 
         BigInteger x = generateX(ficheroHash,eServer);
+        System.out.println("X: "+x);
 
         // Envio de la X
-        enviaFichero(x.toByteArray());
+        BigInteger ficheroFirmado = enviaFichero(x.toByteArray());
+
+        //Destruye k
+        destruyeK();
+
+        //Validar firma
+        boolean verificado = verifySignature(x,eServer,nServer,ficheroFirmado);
+        if(verificado)
+            System.out.println("[CLIENTE]\tFirma realizada correctamente.");
+        else
+            System.out.println("[CLIENTE]\tFirma no realizada correctamente.");
 
 
-        //TODO validar firma.
-        /* Destruir K y verificar */
-        this.k=null;
 
-    teclado.close();
+
         try {
             socket.finaliza();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    private byte[] enviaFichero(byte[] x){
+    private BigInteger enviaFichero(byte[] x){
 
-        byte[] ficheroFirmado = new byte[0];
+       BigInteger ficheroFirmado = null;
         try{
             System.out.println("[CLIENTE]\tEnvía la X.");
-            ficheroFirmado=socket.enviaFichero(x);
-            System.out.println("Firmado: "+new BigInteger(ficheroFirmado));
-            return ficheroFirmado;
+            byte[] fichero=socket.enviaFichero(x);
+            //System.out.println("Firmado: "+new BigInteger(ficheroFirmado));
+            return new BigInteger(fichero);
 
         } catch (IOException e) {
             System.out.println("[ ERROR ]\tEnviando mensaje. "+e);
@@ -101,7 +111,19 @@ public class ClientBlindSignature {
         return eInt;
     }
 
-
+    private BigInteger recibeN() {
+        byte[] n = new byte[0];
+        try {
+            n = socket.pideN();
+            //   System.out.println(e);
+        } catch (IOException ex) {
+            // System.out.println("[ ERROR ]\tRecibiendo e. "+ex);
+            System.exit(1);
+        }
+        BigInteger nInt =  new BigInteger(n);
+        System.out.println("[CLIENTE]\tRecibe N del servidor.");
+        return nInt;
+    }
 
     private void generateOpacityFactorK()  {
         System.out.println("[CLIENTE]\tGenera el factor K. ");
@@ -124,21 +146,43 @@ public class ClientBlindSignature {
 
     private BigInteger generateX(BigInteger hmsg, BigInteger e){
         System.out.println("[CLIENTE]\tGenera X.");
-        System.out.println("h: "+hmsg+"\ne: "+e+"\nk: "+k);
-
         BigInteger x = hmsg.multiply(k.modPow(e,rsaAlgorithm.getn())).mod(rsaAlgorithm.getn());
         System.out.println("La x: "+x);
         return x;
     }
 
-    public byte[] descipher(BigInteger y)  {
-        byte[] original = Base64.getDecoder().decode(rsaAlgorithm.decrypt(y).toByteArray());
+    /**
+     *Verifica que lo que se ha enviado al server es lo mismo que lo que ha recibido
+     *
+     * @param x   Utiliza la X para verificar-
+     * @param eServer   Exponente público server
+     * @param nServer   Modulo del servidor
+     * @param fichFirmado Fichero firmado
+     *
+    * @return  Indica si la firma ha sido hecha correcta o no.
+     */
+    private boolean verifySignature(BigInteger x,   BigInteger eServer, BigInteger nServer, BigInteger fichFirmado){
+        System.out.println("[CLIENTE]\tVerifica firma.");
+
+        BigInteger firma = fichFirmado.modPow(eServer,nServer);
+
+        if(x.equals(firma)){
+            return true;
+        }
+        return false;
+
+    }
+
+    public BigInteger descipher(BigInteger y)  {
+        BigInteger original = rsaAlgorithm.decrypt(y);
         return original;
     }
 
-//    public boolean checkSignature(){
-//
-//    }
+    private void destruyeK(){
+        System.out.println("[CLIENTE]\tDestruye K.");
+        this.k=null;
+    }
+
 
 
     /** Convertir de byte a Integer
@@ -149,6 +193,9 @@ public class ClientBlindSignature {
         BigInteger inte = new BigInteger(encodedString);
         return inte;
     }
+
+
+
 }
 
 
