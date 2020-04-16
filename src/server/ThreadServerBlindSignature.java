@@ -23,7 +23,6 @@ public class ThreadServerBlindSignature implements Runnable {
     public void run() { //Aqui debemos gestionar una sesion con un cliente
 
         boolean done = false;
-        byte[] mensaje;
         byte[] op;
         try {
             while (!done) {
@@ -34,16 +33,15 @@ public class ThreadServerBlindSignature implements Runnable {
                 if (opcion.equals(PIDE_E)) {
                     // Pasamos a byte el big integer
                     BigInteger e = rsaAlgorithm.gete();
-                    System.out.println("E -> "+e);
+                   // System.out.println("E -> "+e);
 
                     byte[] eSended = e.toByteArray();
-                  //  byte[] eSended = Base64.getDecoder().decode(String.valueOf(e));
-                    System.out.println(eSended);
+
                     myDataSocket.sendMessage(eSended, 0, eSended.length);
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
                     byte[] fichero = myDataSocket.receiveMessage();
-                    System.out.println("Fichero:" + new BigInteger(fichero));
+               //     System.out.println("Fichero:" + new BigInteger(fichero));
                     byte[] ficheroFirmado = realizaFirma(fichero);
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
@@ -70,10 +68,10 @@ public class ThreadServerBlindSignature implements Runnable {
         BigInteger x = new BigInteger(fichero);
         BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
         //byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
-      //  return ySigned;
-        System.out.println("y= "+y);
+        // System.out.println("y= "+y);
         return y.toByteArray();
     }
+
 
     // TODO implementar la firma parcialmente ciega
     //***************** FIRMA PARCIALMENTE CIEGA, NO IMPLEMENTADO TODAVÁIA: ********

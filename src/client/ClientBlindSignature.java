@@ -12,12 +12,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-/**
- * Peticiones:
- *  0 -> Pide la E al server
- *  1 -> Indica que envía el fichero.
- */
-
 public class ClientBlindSignature {
 
     private static AuxClientBlindSignature socket;
@@ -55,7 +49,7 @@ public class ClientBlindSignature {
         BigInteger eServer = recibeE();
         BigInteger nServer = recibeN();
 
-        BigInteger x = generateX(ficheroHash,eServer);
+        BigInteger x = generateX(ficheroHash,eServer,nServer);
         System.out.println("X: "+x);
 
         // Envio de la X
@@ -71,14 +65,7 @@ public class ClientBlindSignature {
         else
             System.out.println("[CLIENTE]\tFirma no realizada correctamente.");
 
-
-
-
-        try {
-            socket.finaliza();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        finaliza();
     }
 
     private BigInteger enviaFichero(byte[] x){
@@ -144,9 +131,16 @@ public class ClientBlindSignature {
         return rsaAlgorithm.decrypt(inte);
     }
 
-    private BigInteger generateX(BigInteger hmsg, BigInteger e){
+    /**
+     * Genera la X del cliente
+     * @param hmsg  Mensaje con hash
+     * @param e Llave pública del servidor
+     * @param n Modulo server
+     * @return
+     */
+    private BigInteger generateX(BigInteger hmsg, BigInteger e,BigInteger n){
         System.out.println("[CLIENTE]\tGenera X.");
-        BigInteger x = hmsg.multiply(k.modPow(e,rsaAlgorithm.getn())).mod(rsaAlgorithm.getn());
+        BigInteger x = hmsg.multiply(k.modPow(e,n)).mod(n);
         System.out.println("La x: "+x);
         return x;
     }
@@ -183,7 +177,13 @@ public class ClientBlindSignature {
         this.k=null;
     }
 
-
+    private void finaliza(){
+        try {
+            socket.finaliza();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /** Convertir de byte a Integer
      *
