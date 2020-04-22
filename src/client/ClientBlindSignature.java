@@ -44,8 +44,7 @@ public class ClientBlindSignature {
 //        client.clientExec();
 //    }
 
-    void clientExec1() {
-
+    void clientExec1(byte[] fichero) {
         System.out.println("###################################");
         System.out.println("##### PETICIÓN DE FIRMA ###########");
         System.out.println("###################################");
@@ -53,17 +52,15 @@ public class ClientBlindSignature {
         System.out.println("...");
         System.out.println("CONECTADO!");
         System.out.println("\n");
-    }
-    void clientExec2() {
         System.out.println("[CLIENTE]\tCrea RSA.");
         rsaAlgorithm = new RSA();
         System.out.println(rsaAlgorithm.toString());
-    }
-    void clientExec3(byte[] fichero){
         // Pide fichero
 //        System.out.println("Fichero a firmar");
 //        String fichero = teclado.next();
 //        teclado.close();
+
+        System.out.println(fichero);
 
         generateOpacityFactorK();
 
@@ -150,7 +147,7 @@ public class ClientBlindSignature {
     private BigInteger creaHashFichero(byte[] fichero) {
         System.out.println("[CLIENTE]\tRealiza hash.");
         //BigInteger inte = stringToBigInteger(fichero);
-        System.out.println(fichero);
+        //System.out.println(fichero);
         return rsaAlgorithm.decrypt(new BigInteger(fichero));
     }
 
@@ -218,11 +215,14 @@ public class ClientBlindSignature {
     }
 
 }
+//**********************************************************
+//******************** VISTA CLIENTE ***********************
+//**********************************************************
 
 class VistaCliente extends JFrame implements ActionListener {
     private JLabel texto;
     private JButton btnBuscar;
-    private JButton btnConectar;
+//    private JButton btnConectar;
     private JButton btnGenRSA;
     private JTextField txt;
 
@@ -240,9 +240,9 @@ class VistaCliente extends JFrame implements ActionListener {
         btnBuscar.addActionListener(this);
         add(btnBuscar);
 
-        btnConectar = new JButton("Conectar");
-        btnConectar.addActionListener(this);
-        add(btnConectar);
+//        btnConectar = new JButton("Conectar");
+//        btnConectar.addActionListener(this);
+//        add(btnConectar);
 
         btnGenRSA = new JButton("Generar RSA");
         btnGenRSA.addActionListener(this);
@@ -252,20 +252,16 @@ class VistaCliente extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //PROGRAMA PRINCIPAL
         AuxClientBlindSignature socket;
         ClientBlindSignature client = new ClientBlindSignature();
         socket = new AuxClientBlindSignature("localhost", "1099");
+        byte[] fichero = new byte[0];
 
-        if (e.getSource() == btnConectar) {
-            client.clientExec1();
-        }
         if (e.getSource() == btnGenRSA) {
-            client.clientExec2();
+            client.clientExec1(fichero);
         }
 
         if (e.getSource() == btnBuscar) {
-            byte[] fichero = new byte[0];
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
@@ -278,17 +274,16 @@ class VistaCliente extends JFrame implements ActionListener {
 
                 File fileName = fileChooser.getSelectedFile();
 
-                try {
-                    fichero = Files.readAllBytes(Paths.get(fileName.toPath().toString()));
-                    client.clientExec3(fichero);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-
                 if ((fileName == null) || (fileName.getName().equals(""))) {
                     txt.setText("...");
                 } else {
                     txt.setText(fileName.getAbsolutePath());
+                }
+
+                try {
+                    fichero = Files.readAllBytes(Paths.get(fileName.toPath().toString()));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         }
