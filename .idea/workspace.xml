@@ -2,17 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="64267c78-24dd-4c90-b9f6-07448962b559" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Blind_Signature_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/AuxClientBlindSignature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/AuxClientBlindSignature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/ClientBlindSignature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/ClientBlindSignature.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server/ServerBlindSignature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/ServerBlindSignature.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/ThreadServerBlindSignature.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/ThreadServerBlindSignature.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="ProjectId" id="1aIXwCQDVHk6s1CYTURuE57is9K" />
   <component name="ProjectViewState">
@@ -25,15 +40,31 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Escritorio" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="client" />
+    </key>
   </component>
   <component name="RunManager" selected="Application.ClientBlindSignature">
     <configuration name="ClientBlindSignature" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="client.ClientBlindSignature" />
+      <module name="Blind-Signature" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Cliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="client.Cliente" />
       <module name="Blind-Signature" />
       <extension name="coverage">
         <pattern>
@@ -71,10 +102,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VistaCliente" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="client.VistaCliente" />
+      <module name="Blind-Signature" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ClientBlindSignature" />
         <item itemvalue="Application.ServerBlindSignature" />
+        <item itemvalue="Application.VistaCliente" />
+        <item itemvalue="Application.Cliente" />
         <item itemvalue="Application.Firma" />
       </list>
     </recent_temporary>
@@ -93,34 +139,44 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2598" y="221" width="553" height="592" key="#com.intellij.ide.util.MemberChooser" timestamp="1587043824556">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="-2967" y="362" key="#Project_Structure" timestamp="1587537307642">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state x="2598" y="221" width="553" height="592" key="#com.intellij.ide.util.MemberChooser/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587043824556" />
-    <state x="2603" y="310" width="525" height="416" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587042186849">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="-2967" y="362" key="#Project_Structure/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587537307642" />
+    <state x="-2936" y="286" width="553" height="592" key="#com.intellij.ide.util.MemberChooser" timestamp="1587540101319">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state x="2603" y="310" width="525" height="416" key="#com.intellij.ide.util.TreeClassChooserDialog/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587042186849" />
-    <state x="2658" y="260" width="424" height="513" key="FileChooserDialogImpl" timestamp="1587042200538">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="-2936" y="286" key="#com.intellij.ide.util.MemberChooser/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587540101319" />
+    <state x="2598" y="221" width="553" height="592" key="#com.intellij.ide.util.MemberChooser/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586593067386" />
+    <state x="-2829" y="451" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587542680621">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state x="2658" y="260" width="424" height="513" key="FileChooserDialogImpl/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587042200538" />
-    <state width="1874" height="248" key="GridCell.Tab.0.bottom" timestamp="1587046789705">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="-2829" y="451" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587542680621" />
+    <state x="-2856" y="337" width="424" height="513" key="FileChooserDialogImpl" timestamp="1587538008590">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state width="1874" height="248" key="GridCell.Tab.0.bottom/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587046789705" />
-    <state width="1874" height="248" key="GridCell.Tab.0.center" timestamp="1587046789705">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="-2856" y="337" key="FileChooserDialogImpl/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587538008590" />
+    <state x="2658" y="260" width="424" height="513" key="FileChooserDialogImpl/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586424570456" />
+    <state width="2517" height="391" key="GridCell.Tab.0.bottom" timestamp="1587548802981">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state width="1874" height="248" key="GridCell.Tab.0.center/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587046789705" />
-    <state width="1874" height="248" key="GridCell.Tab.0.left" timestamp="1587046789705">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="2517" height="391" key="GridCell.Tab.0.bottom/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587548802981" />
+    <state width="1874" height="248" key="GridCell.Tab.0.bottom/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587028661861" />
+    <state width="2517" height="391" key="GridCell.Tab.0.center" timestamp="1587548802980">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state width="1874" height="248" key="GridCell.Tab.0.left/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587046789705" />
-    <state width="1874" height="248" key="GridCell.Tab.0.right" timestamp="1587046789705">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="2517" height="391" key="GridCell.Tab.0.center/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587548802980" />
+    <state width="1874" height="248" key="GridCell.Tab.0.center/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587028661861" />
+    <state width="2517" height="391" key="GridCell.Tab.0.left" timestamp="1587548802980">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state width="1874" height="248" key="GridCell.Tab.0.right/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587046789705" />
+    <state width="2517" height="391" key="GridCell.Tab.0.left/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587548802980" />
+    <state width="1874" height="248" key="GridCell.Tab.0.left/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587028661860" />
+    <state width="2517" height="391" key="GridCell.Tab.0.right" timestamp="1587548802980">
+      <screen x="-3840" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="391" key="GridCell.Tab.0.right/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587548802980" />
+    <state width="1874" height="248" key="GridCell.Tab.0.right/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587028661861" />
     <state width="1874" height="337" key="GridCell.Tab.1.bottom" timestamp="1586854917634">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -137,14 +193,23 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state width="1874" height="337" key="GridCell.Tab.1.right/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586854917634" />
-    <state x="2404" y="76" width="1024" height="845" key="SettingsEditor" timestamp="1587042502502">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="-3079" y="278" key="SettingsEditor" timestamp="1587538050527">
+      <screen x="-3840" y="0" width="2560" height="1400" />
     </state>
-    <state x="2404" y="76" width="1024" height="845" key="SettingsEditor/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587042502502" />
-    <state x="0" y="318" width="1538" height="719" key="dock-window-1" timestamp="1586940928484">
-      <screen x="0" y="27" width="1920" height="1010" />
+    <state x="-3079" y="278" key="SettingsEditor/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587538050527" />
+    <state x="1092" y="620" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1587532823155">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state x="1092" y="620" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.2560.1400/697.-1080.1920.1040/3840.0.3840.2120@0.0.2560.1400" timestamp="1587532823155" />
+    <state x="382" y="813" width="1804" height="968" key="dock-window-1" timestamp="1587543030826">
+      <screen x="0" y="0" width="3840" height="2120" />
+    </state>
+    <state x="382" y="813" width="1804" height="968" key="dock-window-1/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587543030826" />
     <state x="0" y="318" width="1538" height="719" key="dock-window-1/0.27.1920.1010/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586940928484" />
+    <state x="413" y="836" width="1804" height="968" key="dock-window-2" timestamp="1587544407294">
+      <screen x="0" y="0" width="3840" height="2120" />
+    </state>
+    <state x="413" y="836" width="1804" height="968" key="dock-window-2/-3143.-1080.1920.1040/0.0.3840.2120/-3840.0.2560.1400@-3840.0.2560.1400" timestamp="1587544407294" />
     <state x="2189" y="119" width="1372" height="796" key="new project wizard" timestamp="1586424576583">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>

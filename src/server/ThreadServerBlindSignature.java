@@ -2,8 +2,6 @@ package server;
 
 import comun.MyStreamSocket;
 import firma.RSA;
-import sun.awt.X11.XSystemTrayPeer;
-
 import java.math.BigInteger;
 import java.util.Base64;
 
