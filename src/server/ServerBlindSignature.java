@@ -31,7 +31,6 @@ public class ServerBlindSignature {
 				System.out.println("connection accepted");
 				Thread theThread = new Thread(new ThreadServerBlindSignature(myDataSocket,rsaAlgorithm));
 				theThread.start();
-
 			}
 		} catch (Exception ex) {
 			System.out.println("[ERROR]\tError conexion servidor");
@@ -58,30 +57,38 @@ public class ServerBlindSignature {
 	/**
 	 * Vista para iniciar el servidor
 	 */
-	private class Vista extends JFrame implements ActionListener {
-		private JFrame jFrame;
+	private class Vista extends JFrame {
 		private JLabel texto;
 		private JButton enciendeServer;
 		private JButton pararServer;
 
 		public Vista() {
 			setLayout(null);
-			enciendeServer=new JButton("Enciende server");
-			enciendeServer.setBounds(100,150,100,30);
-			enciendeServer.addActionListener(this);
-			add(enciendeServer);
-			texto=new JLabel("Presione para encender el servidor.");
-			texto.setBounds(50,50,220,40);
-			add(texto);
-		}
 
-		@Override
-		public void actionPerformed(ActionEvent actionEvent) {
-			if(actionEvent.getSource()==enciendeServer){
-				iniciaServer();
-			}else if(actionEvent.getSource()==pararServer){
-				System.exit(0);
-			}
+			texto=new JLabel("Presione para encender el servidor.");
+			texto.setBounds(50,50,220,30);
+			add(texto);
+
+			enciendeServer=new JButton("Enciende server");
+			enciendeServer.setBounds(100,100,150,30);
+			enciendeServer.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent actionEvent) {
+					iniciaServer();
+				}
+			});
+			this.add(enciendeServer);
+
+			pararServer=new JButton("Apaga server");
+			pararServer.setBounds(100,140,150,30);
+			pararServer.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent actionEvent) {
+					System.exit(0);
+				}
+			});
+			this.add(pararServer);
+
 		}
 	}
 }

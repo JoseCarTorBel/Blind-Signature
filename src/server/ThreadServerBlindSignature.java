@@ -2,13 +2,17 @@ package server;
 
 import comun.MyStreamSocket;
 import firma.RSA;
+
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Base64;
 
 public class ThreadServerBlindSignature implements Runnable {
     MyStreamSocket myDataSocket;
 
     private String PIDE_E = "0", RECIBE_FICHERO = "1", RECIBE_FICHEROS = "2",PIDE_N="3";
+
+    private int N=10;
 
     private RSA rsaAlgorithm;
 
@@ -31,7 +35,7 @@ public class ThreadServerBlindSignature implements Runnable {
                 if (opcion.equals(PIDE_E)) {
                     // Pasamos a byte el big integer
                     BigInteger e = rsaAlgorithm.gete();
-                   // System.out.println("E -> "+e);
+                    // System.out.println("E -> "+e);
 
                     byte[] eSended = e.toByteArray();
 
@@ -39,8 +43,8 @@ public class ThreadServerBlindSignature implements Runnable {
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
                     byte[] fichero = myDataSocket.receiveMessage();
-               //     System.out.println("Fichero:" + new BigInteger(fichero));
-                    byte[] ficheroFirmado = realizaFirma(fichero);
+                    //     System.out.println("Fichero:" + new BigInteger(fichero));
+                    byte[] ficheroFirmado = realizaFirma(fichero,true);
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
 
@@ -61,9 +65,17 @@ public class ThreadServerBlindSignature implements Runnable {
     }
 
 
-    private byte[] realizaFirma(byte[] fichero) {
+    private byte[] realizaFirma(byte[] fichero, boolean esTotal) {
         System.out.println("[SERVER]\nRealiza firma.");
-        BigInteger x = new BigInteger(fichero);
+        if(esTotal){
+            BigInteger x = new BigInteger(fichero);
+            BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
+            //byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
+            // System.out.println("y= "+y);
+            return y.toByteArray();
+        }
+
+        BigInteger x = new BigInteger(Arrays.copyOf(fichero,fichero.length-N));
         BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
         //byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
         // System.out.println("y= "+y);
@@ -71,11 +83,27 @@ public class ThreadServerBlindSignature implements Runnable {
     }
 
 
+
     // TODO implementar la firma parcialmente ciega
-    //***************** FIRMA PARCIALMENTE CIEGA, NO IMPLEMENTADO TODAVÁIA: ********
-    private boolean validaFicheros(byte[][] ficheros) {
-        return true;
+
+    /**
+     * Genera el J que le pide al cliente
+     * @param N
+     * @return int
+     */
+    private int pidej(int N){
+        return (int) Math.random()*N+1;
     }
 
+    private boolean validaFicheros(byte[][] ficheros,int lengthCompRandom) {
+        for(int i=1;i<ficheros.length;i++){
+
+            if(!Arrays.equals(  Arrays.copyOf(ficheros[i-1],ficheros[i-1].length-lengthCompRandom),
+                    Arrays.copyOf(ficheros[i],ficheros[i-1].length-lengthCompRandom))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
