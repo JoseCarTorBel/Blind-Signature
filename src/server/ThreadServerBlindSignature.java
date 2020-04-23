@@ -3,8 +3,10 @@ package server;
 import comun.MyStreamSocket;
 import firma.RSA;
 
-import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Arrays.*;
+
+import java.math.BigInteger;
 import java.util.Base64;
 
 public class ThreadServerBlindSignature implements Runnable {

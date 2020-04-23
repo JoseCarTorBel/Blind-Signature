@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -31,7 +33,7 @@ public class ClientBlindSignature {
 
     private static AuxClientBlindSignature socket;
 
-
+    private String filePath;
     private RSA rsaAlgorithm;
     private Scanner teclado = new Scanner(System.in);
     private BigInteger k;
@@ -82,7 +84,21 @@ public class ClientBlindSignature {
         else
             System.out.println("[CLIENTE]\tFirma no realizada correctamente.");
 
+        FileWriter fich = null;
+        try{
+            fich = new FileWriter(this.filePath+"/ficheroFirmado");
+            fich.write(String.valueOf(ficheroFirmado));
+            fich.close();
+        }catch (Exception ex){
+            System.out.println("[ERROR]\tEscritura fichero.");
+            ex.printStackTrace();
+        }
         finaliza();
+    }
+
+    public void pathFile(Path path){
+        Path pathNoName = path.getParent();
+        this.filePath= pathNoName.toString();
     }
 
     private BigInteger enviaFichero(byte[] x) {
@@ -213,10 +229,17 @@ public class ClientBlindSignature {
     }
 
 }
+
+
+
+
 //**********************************************************
 //******************** VISTA CLIENTE ***********************
 //**********************************************************
 
+/**
+ * Vista del cliente
+ */
 class VistaCliente extends JFrame implements ActionListener {
     private JLabel texto;
     private JLabel texto2;
@@ -314,6 +337,8 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt.setText("...");
                 } else {
                     txt.setText(fileName.getAbsolutePath());
+                    //TODO Esto no va
+                    client.pathFile(fileName.toPath());
                     archivo = txt.toString().getBytes();
                     System.out.println(txt);
                     System.out.println(archivo.length);
@@ -397,11 +422,6 @@ class VistaCliente extends JFrame implements ActionListener {
             System.out.println();
             //client.clientExec1(archivo);
         }
-
-
-
-
-
     }
 }
 
