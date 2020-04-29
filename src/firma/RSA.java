@@ -7,7 +7,7 @@ public class RSA {
     int BIT_LENGTH=2048;
 
     private final BigInteger one = new BigInteger("1");
-    private final SecureRandom random;
+    private SecureRandom random = null;
 
     private BigInteger d;
     private BigInteger e;
@@ -20,7 +20,7 @@ public class RSA {
      */
     public RSA(){
 
-        random = new SecureRandom();
+        this.random = new SecureRandom();
         BigInteger p =  BigInteger.probablePrime(BIT_LENGTH/2, this.random);
         BigInteger q = BigInteger.probablePrime(BIT_LENGTH/2, this.random);
 
@@ -32,7 +32,7 @@ public class RSA {
         d=e.modInverse(phi);
     }
 
-    public RSA(BigInteger d, BigInteger e, BigInteger n){
+    public RSA( BigInteger d, BigInteger e, BigInteger n){
         this.d=d;
         this.e=e;
         this.n=n;
