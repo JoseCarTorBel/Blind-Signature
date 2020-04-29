@@ -112,19 +112,13 @@ public class ThreadServerBlindSignature implements Runnable {
     }
 
     private boolean validaFicheros(List<byte[]> ficheros,int lengthCompRandom) {
-        for(int i=0;i<ficheros.size();i++){
+        for(int i=1;i<ficheros.size();i++){
 
-            if(!Arrays.equals(  Arrays.copyOf(ficheros[i-1],ficheros[i-1].length-lengthCompRandom),
-                    Arrays.copyOf(ficheros[i],ficheros[i].length-lengthCompRandom))) {
+            if(!Arrays.equals(  Arrays.copyOf(ficheros.get(i-1),ficheros.get(i-1).length-lengthCompRandom),
+                    Arrays.copyOf(ficheros.get(i),ficheros.get(i).length-lengthCompRandom))) {
                 return false;
             }
         }
         return true;
     }
-
-
-
-
-
 }
-
