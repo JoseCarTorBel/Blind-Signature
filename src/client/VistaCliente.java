@@ -19,8 +19,9 @@ import java.io.Reader;
  */
 class VistaCliente extends JFrame implements ActionListener {
     private JLabel texto;
-    private JLabel texto2;
-    private JLabel texto3;
+    private JRadioButton radio;
+    private JRadioButton radio2;
+    ButtonGroup grupo;
     private JButton btnBuscar;
     private JButton btnBuscarE;
     private JButton btnBuscarN;
@@ -32,6 +33,9 @@ class VistaCliente extends JFrame implements ActionListener {
     private JTextField claveN;
     private JTextField claveD;
     static byte[] archivo = new byte[0];
+    private String keyE="";
+    private String keyD="";
+    private String keyN="";
 
     /**
      * Definición objetos de la vista
@@ -40,6 +44,7 @@ class VistaCliente extends JFrame implements ActionListener {
         super("Firma tu fichero");
         texto=new JLabel("Sube aquí tu fichero.");
         texto.setBounds(50,10,220,40);
+        grupo = new ButtonGroup();
         add(texto);
         setLayout(null);
 
@@ -52,18 +57,23 @@ class VistaCliente extends JFrame implements ActionListener {
         btnBuscar.setBounds(50,80,100,25);
         add(btnBuscar);
 
-        texto2=new JLabel("Genera tu firma completa.");
-        texto2.setBounds(50,110,220,40);
-        add(texto2);
+        radio = new JRadioButton();
+        radio.setText("Genera tu firma completa.");
+        radio.setBounds(50,110,220,40);
+        add(radio);
+        grupo.add(radio);
 
         btnGenRSA = new JButton("Generar RSA");
         btnGenRSA.addActionListener(this);
         btnGenRSA.setBounds(50,150,220,30);
         add(btnGenRSA);
+        //btnGenRSA.setEnabled(false);
 
-        texto3=new JLabel("Genera tu firma escogiendo tus claves.");
-        texto3.setBounds(50,210,250,30);
-        add(texto3);
+        radio2 = new JRadioButton();
+        radio2.setText("Genera tu firma escogiendo tus claves.");
+        radio2.setBounds(50,210,250,30);
+        add(radio2);
+        grupo.add(radio2);
 
         claveE = new JTextField(30);
         claveE.setBounds(50,250,200,25);
@@ -108,6 +118,7 @@ class VistaCliente extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         ClientBlindSignature client = new ClientBlindSignature();
 
+
         if (e.getSource() == btnBuscar) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -125,88 +136,132 @@ class VistaCliente extends JFrame implements ActionListener {
                     //TODO Esto no va
                     client.pathFile(fileName.toPath());
                     archivo = txt.toString().getBytes();
-                    System.out.println(txt);
-                    System.out.println(archivo.length);
+                    //System.out.println(txt);
+                    //System.out.println(archivo.length);
                 }
             }
         }
 
-        //TODO Cambiar, cuando se pulsa que genere rsa, genera el rsa pero no lo envía todavía
-        if (e.getSource() == btnGenRSA) {
-            System.out.println(archivo.length);
-            client.clientExec1(archivo);
+        if (radio.isSelected() == true) {
+            radio2.setSelected(false);
+            //btnGenRSA.setEnabled(true);
+            if (e.getSource() == btnGenRSA) {
+                client.clientExec1(archivo);
+            }
         }
+        if (radio2.isSelected() == true) {
+            radio.setSelected(false);
+            //btnGenRSA.setEnabled(false);
+            //client.clientExec2(archivo);
 
-        if (e.getSource() == btnBuscarE) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            String cadena;
+            //TODO Cambiar, cuando se pulsa que genere rsa, genera el rsa pero no lo envía todavía
 
-            int result = fileChooser.showOpenDialog(this);
+            if (e.getSource() == btnBuscarE) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                String cadena;
 
-            if (result != JFileChooser.CANCEL_OPTION) {
+                int result = fileChooser.showOpenDialog(this);
 
-                File fileName = fileChooser.getSelectedFile();
+                if (result != JFileChooser.CANCEL_OPTION) {
 
-                if ((fileName == null) || (fileName.getName().equals(""))) {
-                    claveE.setText("...");
-                } else {
-                    // Con esto leemos el contenido de la clave
-                    try {
-                        claveE.setText(fileName.getAbsolutePath());
-                        fileName.createNewFile();
-                        Reader targetReader = new FileReader(fileName);
-                        BufferedReader b = new BufferedReader(targetReader);
-                        while ((cadena = b.readLine()) != null) {
-                            System.out.println(cadena);
+                    File fileName = fileChooser.getSelectedFile();
+
+                    if ((fileName == null) || (fileName.getName().equals(""))) {
+                        claveE.setText("...");
+                    } else {
+                        // Con esto leemos el contenido de la clave
+                        try {
+                            claveE.setText(fileName.getAbsolutePath());
+                            fileName.createNewFile();
+                            Reader targetReader = new FileReader(fileName);
+                            BufferedReader b = new BufferedReader(targetReader);
+                            int i=0;
+                            while ((cadena = b.readLine()) != null) {
+                                if (i>0 && i<27)
+                                    keyE+=cadena;
+                                i++;
+                            }
+                            b.close();
+                        } catch (Exception ex) {
+                            System.out.println("Algo ha ido mal con el fichero");
                         }
-                        b.close();
-                    } catch (Exception ex){
-                        System.out.println("Algo ha ido mal con el fichero");
                     }
                 }
             }
-        }
 
-        if (e.getSource() == btnBuscarN) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            if (e.getSource() == btnBuscarN) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                String cadena;
 
-            int result = fileChooser.showOpenDialog(this);
+                int result = fileChooser.showOpenDialog(this);
 
-            if (result != JFileChooser.CANCEL_OPTION) {
+                if (result != JFileChooser.CANCEL_OPTION) {
 
-                File fileName = fileChooser.getSelectedFile();
+                    File fileName = fileChooser.getSelectedFile();
 
-                if ((fileName == null) || (fileName.getName().equals(""))) {
-                    claveN.setText("...");
-                } else {
-                    claveN.setText(fileName.getAbsolutePath());
+                    if ((fileName == null) || (fileName.getName().equals(""))) {
+                        claveN.setText("...");
+                    } else {
+                        // Con esto leemos el contenido de la clave
+                        try {
+                            claveN.setText(fileName.getAbsolutePath());
+                            fileName.createNewFile();
+                            Reader targetReader = new FileReader(fileName);
+                            BufferedReader b = new BufferedReader(targetReader);
+                            int i=0;
+                            while ((cadena = b.readLine()) != null) {
+                                if (i>0 && i<27)
+                                    keyN+=cadena;
+                                i++;
+                            }
+                            b.close();
+                        } catch (Exception ex) {
+                            System.out.println("Algo ha ido mal con el fichero");
+                        }
+                    }
                 }
             }
-        }
 
-        if (e.getSource() == btnBuscarD) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            if (e.getSource() == btnBuscarD) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                String cadena;
 
-            int result = fileChooser.showOpenDialog(this);
+                int result = fileChooser.showOpenDialog(this);
 
-            if (result != JFileChooser.CANCEL_OPTION) {
+                if (result != JFileChooser.CANCEL_OPTION) {
 
-                File fileName = fileChooser.getSelectedFile();
+                    File fileName = fileChooser.getSelectedFile();
 
-                if ((fileName == null) || (fileName.getName().equals(""))) {
-                    claveD.setText("...");
-                } else {
-                    claveD.setText(fileName.getAbsolutePath());
+                    if ((fileName == null) || (fileName.getName().equals(""))) {
+                        claveD.setText("...");
+                    } else {
+                        // Con esto leemos el contenido de la clave
+                        try {
+                            claveD.setText(fileName.getAbsolutePath());
+                            fileName.createNewFile();
+                            Reader targetReader = new FileReader(fileName);
+                            BufferedReader b = new BufferedReader(targetReader);
+                            int i=0;
+                            while ((cadena = b.readLine()) != null) {
+                                if (i>0 && i<27)
+                                    keyD+=cadena;
+                                i++;
+                            }
+                            b.close();
+                        } catch (Exception ex) {
+                            System.out.println("Algo ha ido mal con el fichero");
+                        }
+
+                    }
                 }
             }
-        }
 
-        if (e.getSource() == btnGenRSA2) {
-            System.out.println();
-            //client.clientExec1(archivo);
+            if (e.getSource() == btnGenRSA2) {
+                client.clientExec2(archivo, keyE, keyN, keyD);
+            }
         }
     }
 }

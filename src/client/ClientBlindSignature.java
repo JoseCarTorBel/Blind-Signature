@@ -96,6 +96,64 @@ public class ClientBlindSignature {
         finaliza();
     }
 
+    void clientExec2(byte[] fichero, String e, String n, String d) {
+
+        System.out.println("###################################");
+        System.out.println("##### PETICIÓN DE FIRMA ###########");
+        System.out.println("###################################");
+        System.out.println("Conectando...");
+        System.out.println("...");
+        System.out.println("*********** Tus Claves ************");
+        System.out.println("Clave e: " + e);
+        System.out.println("Clave n: " + n);
+        System.out.println("Clave d: " + d);
+        System.out.println("CONECTADO!");
+        System.out.println("[CLIENTE]\tCrea RSA.");
+
+        BigInteger keyE = stringToBigInteger(e);
+        BigInteger keyN = stringToBigInteger(n);
+        BigInteger keyD = stringToBigInteger(d);
+
+        rsaAlgorithm = new RSA(keyD, keyE, keyN);
+        System.out.println(rsaAlgorithm.toString());
+        System.out.println(fichero);
+
+        generateOpacityFactorK();
+
+        BigInteger ficheroHash = creaHashFichero(fichero);
+        BigInteger eServer = recibeE();
+        BigInteger nServer = recibeN();
+
+        BigInteger x = generateX(ficheroHash, eServer, nServer);
+        System.out.println("X: " + x);
+
+        // Envio de la X
+        BigInteger ficheroFirmado = enviaFichero(x.toByteArray());
+
+        //Destruye k
+        destruyeK();
+
+        //Validar firma
+        boolean verificado = verifySignature(x, eServer, nServer, ficheroFirmado);
+        if (verificado)
+            System.out.println("[CLIENTE]\tFirma realizada correctamente.");
+        else
+            System.out.println("[CLIENTE]\tFirma no realizada correctamente.");
+
+        FileWriter fich = null;
+        try{
+            fich = new FileWriter(this.filePath+"/ficheroFirmado");
+            fich.write(String.valueOf(ficheroFirmado));
+            fich.close();
+        }catch (Exception ex){
+            System.out.println("[ERROR]\tEscritura fichero.");
+            ex.printStackTrace();
+        }
+        finaliza();
+
+    }
+
+
 
 
 
