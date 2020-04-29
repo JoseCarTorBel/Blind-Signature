@@ -96,6 +96,21 @@ public class ClientBlindSignature {
         finaliza();
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+/****** GESTIÓN PRIVADA FIRMA ***************/
+
+
     /**
      * Estraer el path sin nombre del fichero
      * @param path  path sin nombre
@@ -233,13 +248,6 @@ public class ClientBlindSignature {
     }
 
 }
-
-
-
-
-//**********************************************************
-//******************** VISTA CLIENTE ***********************
-//**********************************************************
 
 
 

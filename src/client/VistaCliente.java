@@ -8,6 +8,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 
+
+//**********************************************************
+//******************** VISTA CLIENTE ***********************
+//**********************************************************
+
+
 /**
  * Vista del cliente
  */
@@ -125,6 +131,7 @@ class VistaCliente extends JFrame implements ActionListener {
             }
         }
 
+        //TODO Cambiar, cuando se pulsa que genere rsa, genera el rsa pero no lo envía todavía
         if (e.getSource() == btnGenRSA) {
             System.out.println(archivo.length);
             client.clientExec1(archivo);
