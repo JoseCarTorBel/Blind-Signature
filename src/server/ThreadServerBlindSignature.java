@@ -1,5 +1,6 @@
 package server;
 
+import com.sun.org.apache.regexp.internal.RE;
 import comun.MyStreamSocket;
 import firma.RSA;
 
@@ -16,7 +17,12 @@ public class ThreadServerBlindSignature implements Runnable {
 
     private String PIDE_E = "0", RECIBE_FICHERO = "1", RECIBE_FICHEROS = "2",PIDE_N="3";
 
+    /**
+     * Número de bytes que varían en los ficheros, es aleatorio.
+     */
     private int N=10;
+    private int RETO = 10;
+
 
     private RSA rsaAlgorithm;
 
@@ -35,6 +41,7 @@ public class ThreadServerBlindSignature implements Runnable {
                 op = Base64.getDecoder().decode(myDataSocket.receiveMessage());
                 String opcion = new String(op);
                 System.out.println("[SERVER]\tOpcion recibida " + opcion);
+
 
                 if (opcion.equals(PIDE_E)) {
                     // Pasamos a byte el big integer
@@ -58,15 +65,25 @@ public class ThreadServerBlindSignature implements Runnable {
                     myDataSocket.sendMessage(nByte, 0, nByte.length);
 
                 }else if(opcion.equals(RECIBE_FICHEROS)){
+                    int j  = pidej();
+                    byte[] jB = {(byte) j};
+                    myDataSocket.sendMessage(jB,0,jB.length);
+
                     List<byte[]> ficheros=new ArrayList<byte[]>();
+                    List<byte[]> factores = new ArrayList<byte[]>();
 
                     for(int f=0; f<N-1;f++){
                         ficheros.add(myDataSocket.receiveMessage());
+                        factores.add(myDataSocket.receiveMessage());
+                    }
+                    // Envía 0 si es False, Envía 1 si es True.
+                    if(validaFicheros(ficheros,factores, N)) {
+                        myDataSocket.sendMessage(new byte[]{(byte) 0}, 0, jB.length);
+                    }else {
+                        myDataSocket.sendMessage(new byte[]{(byte) 1}, 0, jB.length);
                     }
 
-
-
-                } else {    /**Termina operación */
+                } else {    /** Termina operación */
                     System.out.println("[SERVER]\tProceso terminado.\n\tEXIT");
                     myDataSocket.close();
                     done = true;
@@ -97,28 +114,40 @@ public class ThreadServerBlindSignature implements Runnable {
     }
 
 
-/***********************************************************/
 
 
-    // TODO implementar la firma parcialmente ciega
+
+
+//_____________________________________________________________________________________
 
     /**
      * Genera el J que le pide al cliente
-     * @param N Reto
      * @return int  Devulve la J
      */
-    private int pidej(int N){
-        return (int) Math.random()*N+1;
+    private int pidej(){
+        return (int) Math.random()* RETO +1;
     }
 
-    private boolean validaFicheros(List<byte[]> ficheros,int lengthCompRandom) {
-        for(int i=1;i<ficheros.size();i++){
 
-            if(!Arrays.equals(  Arrays.copyOf(ficheros.get(i-1),ficheros.get(i-1).length-lengthCompRandom),
-                    Arrays.copyOf(ficheros.get(i),ficheros.get(i).length-lengthCompRandom))) {
-                return false;
+    /**
+     * Valida que los ficheros sean iguales.
+     *
+     * @param ficheros  Ficheros a validar
+     * @param factores  Factores K a validar
+     * @param lengthCompRandom  Longitud de la parte random.
+     * @return  Si se han podido validar o no.
+     */
+    private boolean validaFicheros(List<byte[]> ficheros,List<byte[]> factores, int lengthCompRandom) {
+        for(int i=1;i<ficheros.size();i++){
+            if(     !   Arrays.equals(  Arrays.copyOf(ficheros.get(i-1),ficheros.get(i-1).length-lengthCompRandom),
+                        Arrays.copyOf(ficheros.get(i),ficheros.get(i).length-lengthCompRandom))
+                        &&
+                    !   factores.get(i-1).equals(factores.get(i))                               ) {
+
+                    return false;
             }
         }
+
         return true;
     }
 }
