@@ -3,11 +3,13 @@ package server;
 import comun.MyStreamSocket;
 import firma.RSA;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Arrays.*;
 
 import java.math.BigInteger;
 import java.util.Base64;
+import java.util.List;
 
 public class ThreadServerBlindSignature implements Runnable {
     MyStreamSocket myDataSocket;
@@ -50,10 +52,20 @@ public class ThreadServerBlindSignature implements Runnable {
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
 
-                }else if(opcion.equals(PIDE_N)){
+                }else if(opcion.equals(PIDE_N)) {
                     BigInteger n = rsaAlgorithm.getn();
                     byte[] nByte = n.toByteArray();
-                    myDataSocket.sendMessage(nByte,0,nByte.length);
+                    myDataSocket.sendMessage(nByte, 0, nByte.length);
+
+                }else if(opcion.equals(RECIBE_FICHEROS)){
+                    List<byte[]> ficheros=new ArrayList<byte[]>();
+
+                    for(int f=0; f<N-1;f++){
+                        ficheros.add(myDataSocket.receiveMessage());
+                    }
+
+
+
                 } else {    /**Termina operación */
                     System.out.println("[SERVER]\tProceso terminado.\n\tEXIT");
                     myDataSocket.close();
@@ -99,8 +111,8 @@ public class ThreadServerBlindSignature implements Runnable {
         return (int) Math.random()*N+1;
     }
 
-    private boolean validaFicheros(byte[][] ficheros,int lengthCompRandom) {
-        for(int i=1;i<ficheros.length;i++){
+    private boolean validaFicheros(List<byte[]> ficheros,int lengthCompRandom) {
+        for(int i=0;i<ficheros.size();i++){
 
             if(!Arrays.equals(  Arrays.copyOf(ficheros[i-1],ficheros[i-1].length-lengthCompRandom),
                     Arrays.copyOf(ficheros[i],ficheros[i].length-lengthCompRandom))) {
@@ -109,5 +121,10 @@ public class ThreadServerBlindSignature implements Runnable {
         }
         return true;
     }
+
+
+
+
+
 }
 

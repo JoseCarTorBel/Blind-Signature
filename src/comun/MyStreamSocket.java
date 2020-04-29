@@ -12,7 +12,6 @@ public class MyStreamSocket extends Socket {
                   int acceptorPort ) throws SocketException, IOException{
       socket = new Socket(acceptorHost, acceptorPort );
       setStreams( );
-
    }
 
    public MyStreamSocket(Socket socket)  throws IOException {
@@ -60,6 +59,7 @@ public class MyStreamSocket extends Socket {
       }
       return data;
    }
+
 
    public void close( ) throws IOException {
       socket.close( );

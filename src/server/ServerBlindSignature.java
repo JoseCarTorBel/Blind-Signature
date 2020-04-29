@@ -2,15 +2,12 @@ package server;
 
 import comun.MyStreamSocket;
 import firma.RSA;
-import sun.awt.X11.XVisibilityEvent;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigInteger;
 import java.net.ServerSocket;
-import java.util.Base64;
+
 
 /**
  * Al hilo que gestiona el cliente se le pasa el rsa ya que todos los documentos firmados por el banco tendrán la misma firma.
@@ -42,6 +39,7 @@ public class ServerBlindSignature {
 		}
 	}
 
+
 	private void ejecuta()  {
 		final Vista[] ventana = new Vista[1];
 
@@ -56,7 +54,6 @@ public class ServerBlindSignature {
 			}
 		});
 	}
-
 
 	/**
 	 * Vista para iniciar el servidor
