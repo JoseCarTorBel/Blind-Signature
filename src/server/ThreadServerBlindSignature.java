@@ -85,13 +85,15 @@ public class ThreadServerBlindSignature implements Runnable {
     }
 
 
+/***********************************************************/
+
 
     // TODO implementar la firma parcialmente ciega
 
     /**
      * Genera el J que le pide al cliente
-     * @param N
-     * @return int
+     * @param N Reto
+     * @return int  Devulve la J
      */
     private int pidej(int N){
         return (int) Math.random()*N+1;
@@ -101,7 +103,7 @@ public class ThreadServerBlindSignature implements Runnable {
         for(int i=1;i<ficheros.length;i++){
 
             if(!Arrays.equals(  Arrays.copyOf(ficheros[i-1],ficheros[i-1].length-lengthCompRandom),
-                    Arrays.copyOf(ficheros[i],ficheros[i-1].length-lengthCompRandom))) {
+                    Arrays.copyOf(ficheros[i],ficheros[i].length-lengthCompRandom))) {
                 return false;
             }
         }
