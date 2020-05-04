@@ -122,8 +122,6 @@ class VistaCliente extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-      //  ClientBlindSignature client = new ClientBlindSignature();
-        System.out.println(client);
 
         if (e.getSource() == btnBuscar) {
             JFileChooser fileChooser = new JFileChooser();
@@ -156,8 +154,6 @@ class VistaCliente extends JFrame implements ActionListener {
         }
         if (radio2.isSelected() == true) {
             radio.setSelected(false);
-            //btnGenRSA.setEnabled(false);
-            //client.clientExec2(archivo);
 
             //TODO Cambiar, cuando se pulsa que genere rsa, genera el rsa pero no lo envía todavía
 

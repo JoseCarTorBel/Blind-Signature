@@ -108,7 +108,7 @@ public class ClientBlindSignature {
             try {
                 System.out.println(this.filePath);
                 fich = new FileWriter(this.filePath + "/ficheroFirmado");
-                fich.write(String.valueOf(ficheroFirmado));
+                fich.write(IntegerToString(ficheroFirmado));
                 fich.close();
             } catch (Exception ex) {
                 System.out.println("[ERROR]\tEscritura fichero.");
@@ -261,6 +261,11 @@ public class ClientBlindSignature {
         return inte;
     }
 
+    private String IntegerToString(BigInteger convert){
+
+        String  converted = Base64.getEncoder().encodeToString(convert.toByteArray());
+        return converted;
+    }
 }
 
 
