@@ -37,11 +37,17 @@ class VistaCliente extends JFrame implements ActionListener {
     private String keyD="";
     private String keyN="";
 
+    private ClientBlindSignature client;
+
+
     /**
      * Definición objetos de la vista
      */
-    public VistaCliente() {
+    public VistaCliente(ClientBlindSignature cliente) {
         super("Firma tu fichero");
+
+        client = cliente;
+
         texto=new JLabel("Sube aquí tu fichero.");
         texto.setBounds(50,10,220,40);
         grupo = new ButtonGroup();
@@ -116,8 +122,8 @@ class VistaCliente extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        ClientBlindSignature client = new ClientBlindSignature();
-
+      //  ClientBlindSignature client = new ClientBlindSignature();
+        System.out.println(client);
 
         if (e.getSource() == btnBuscar) {
             JFileChooser fileChooser = new JFileChooser();
@@ -133,7 +139,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt.setText("...");
                 } else {
                     txt.setText(fileName.getAbsolutePath());
-                    //TODO Esto no va
                     client.pathFile(fileName.toPath());
                     archivo = txt.toString().getBytes();
                     //System.out.println(txt);
@@ -146,7 +151,7 @@ class VistaCliente extends JFrame implements ActionListener {
             radio2.setSelected(false);
             //btnGenRSA.setEnabled(true);
             if (e.getSource() == btnGenRSA) {
-                client.clientExec1(archivo);
+                client.initialRSA(archivo);
             }
         }
         if (radio2.isSelected() == true) {
@@ -260,7 +265,7 @@ class VistaCliente extends JFrame implements ActionListener {
             }
 
             if (e.getSource() == btnGenRSA2) {
-                client.clientExec2(archivo, keyE, keyN, keyD);
+                client.initialRSA(archivo, keyE, keyN, keyD);
             }
         }
     }
