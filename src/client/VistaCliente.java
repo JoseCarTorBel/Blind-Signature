@@ -1,6 +1,7 @@
 package client;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -19,6 +20,7 @@ import java.io.Reader;
  */
 class VistaCliente extends JFrame implements ActionListener {
     private JLabel texto;
+    private JLabel inicio;
     private JRadioButton radio;
     private JRadioButton radio2;
     ButtonGroup grupo;
@@ -28,6 +30,7 @@ class VistaCliente extends JFrame implements ActionListener {
     private JButton btnBuscarD;
     private JButton btnGenRSA;
     private JButton btnGenRSA2;
+    private JButton btnPedirFirma;
     private JTextField txt;
     private JTextField claveE;
     private JTextField claveN;
@@ -48,70 +51,91 @@ class VistaCliente extends JFrame implements ActionListener {
 
         client = cliente;
 
-        texto=new JLabel("Sube aquí tu fichero.");
-        texto.setBounds(50,10,220,40);
+        inicio=new JLabel("Sistema de solicitud de firma ciega");
+        inicio.setBounds(50,10,300,40);
+        inicio.setFont(new Font("Verdana", Font.BOLD, 16));
         grupo = new ButtonGroup();
-        add(texto);
+        add(inicio);
         setLayout(null);
 
+        texto=new JLabel("Sube aquí tu fichero.");
+        texto.setBounds(50,40,220,40);
+        texto.setFont(new Font("Verdana", Font.PLAIN, 14));
+        grupo = new ButtonGroup();
+        add(texto);
+
         txt = new JTextField(30);
-        txt.setBounds(50,50,300,25);
+        txt.setBounds(50,80,300,25);
         add(txt);
 
         btnBuscar = new JButton("Buscar...");
         btnBuscar.addActionListener(this);
-        btnBuscar.setBounds(50,80,100,25);
+        btnBuscar.setBounds(50,110,100,25);
+        btnBuscar.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscar);
 
         radio = new JRadioButton();
         radio.setText("Genera tu firma completa.");
-        radio.setBounds(50,110,220,40);
+        radio.setBounds(50,140,220,40);
+        radio.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(radio);
         grupo.add(radio);
 
         btnGenRSA = new JButton("Generar RSA");
         btnGenRSA.addActionListener(this);
-        btnGenRSA.setBounds(50,150,220,30);
+        btnGenRSA.setBounds(50,180,220,30);
+        btnGenRSA.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnGenRSA);
         //btnGenRSA.setEnabled(false);
 
         radio2 = new JRadioButton();
         radio2.setText("Genera tu firma escogiendo tus claves.");
-        radio2.setBounds(50,210,250,30);
+        radio2.setBounds(50,240,300,30);
+        radio2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(radio2);
         grupo.add(radio2);
 
         claveE = new JTextField(30);
-        claveE.setBounds(50,250,200,25);
+        claveE.setBounds(50,280,200,25);
         add(claveE);
 
         btnBuscarE = new JButton("Clave 'e'");
         btnBuscarE.addActionListener(this);
-        btnBuscarE.setBounds(255,250,100,25);
+        btnBuscarE.setBounds(255,280,100,25);
+        btnBuscarE.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscarE);
 
         claveN = new JTextField(30);
-        claveN.setBounds(50,290,200,25);
+        claveN.setBounds(50,320,200,25);
         add(claveN);
 
         btnBuscarN = new JButton("Clave 'n'");
         btnBuscarN.addActionListener(this);
-        btnBuscarN.setBounds(255,290,100,25);
+        btnBuscarN.setBounds(255,320,100,25);
+        btnBuscarN.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscarN);
 
         claveD = new JTextField(30);
-        claveD.setBounds(50,330,200,25);
+        claveD.setBounds(50,360,200,25);
         add(claveD);
 
         btnBuscarD = new JButton("Clave 'd'");
         btnBuscarD.addActionListener(this);
-        btnBuscarD.setBounds(255,330,100,25);
+        btnBuscarD.setBounds(255,360,100,25);
+        btnBuscarD.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscarD);
 
         btnGenRSA2 = new JButton("Generar RSA");
         btnGenRSA2.addActionListener(this);
-        btnGenRSA2.setBounds(50,370,220,30);
+        btnGenRSA2.setBounds(50,400,220,30);
+        btnGenRSA2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnGenRSA2);
+
+        btnPedirFirma = new JButton("SOLICITAR FIRMA");
+        btnPedirFirma.addActionListener(this);
+        btnPedirFirma.setBounds(50,450,300,60);
+        btnPedirFirma.setFont(new Font("Verdana", Font.PLAIN, 14));
+        add(btnPedirFirma);
 
     }
 
@@ -263,6 +287,12 @@ class VistaCliente extends JFrame implements ActionListener {
             if (e.getSource() == btnGenRSA2) {
                 client.initialRSA(archivo, keyE, keyN, keyD);
             }
+
+        }
+
+        if(e.getSource() == btnPedirFirma) {
+            client.blindProcess(archivo);
+
         }
     }
 }

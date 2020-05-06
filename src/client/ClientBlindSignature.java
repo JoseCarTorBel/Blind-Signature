@@ -53,7 +53,7 @@ public class ClientBlindSignature {
     void initialRSA(byte[] fichero){
         rsaAlgorithm = new RSA();
         System.out.println("Holaaaaaaaaaaaaaaaaa -> "+this.filePath);
-        blindProcess(fichero);
+        //blindProcess(fichero);
     }
 
 
@@ -71,7 +71,7 @@ public class ClientBlindSignature {
         BigInteger keyD = stringToBigInteger(d);
 
         rsaAlgorithm = new RSA(keyD, keyE, keyN);
-        blindProcess(fichero);
+        //blindProcess(fichero);
 
     }
 
