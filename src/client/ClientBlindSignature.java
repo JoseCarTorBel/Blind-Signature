@@ -39,32 +39,22 @@ public class ClientBlindSignature {
     private Scanner teclado = new Scanner(System.in);
     private BigInteger k;
 
-//    public static void main(String[] args) {
-//        ClientBlindSignature client = new ClientBlindSignature();
-//        socket = new AuxClientBlindSignature("localhost", "1099");
-//        client.clientExec();
-//    }
-
-
     /**
      * Crea RSA con el par de llaves desde 0.
-     * @param fichero   Fichero que debe ser firmado
      */
-    void initialRSA(byte[] fichero){
+    void initialRSA(){
         rsaAlgorithm = new RSA();
-        System.out.println("Holaaaaaaaaaaaaaaaaa -> "+this.filePath);
         //blindProcess(fichero);
     }
 
 
     /**
      * Crea RSA a partir de las llaves dadas
-     * @param fichero   Fichero a firmar
      * @param e Llave e
      * @param n Módulo
      * @param d Llave d
      */
-    void initialRSA(byte[] fichero, String e, String n, String d) {
+    void initialRSA(String e, String n, String d) {
 
         BigInteger keyE = stringToBigInteger(e);
         BigInteger keyN = stringToBigInteger(n);
@@ -81,11 +71,13 @@ public class ClientBlindSignature {
      * Genera la X del fichero.
      * Envía y recibe el fichero firmado
      * Lo verifica a ver si es correcto.
-     *
+     * @return boolean  Devuelve si ha habido error o no a la vista
      * @param fichero Fichero que debe ser firmado.
      */
-    void blindProcess(byte[] fichero){
-
+    boolean blindProcess(byte[] fichero){
+        if(fichero.length==0){
+            return false;
+        }
         generateOpacityFactorK();
 
         BigInteger ficheroHash = creaHashFichero(fichero);
@@ -102,13 +94,16 @@ public class ClientBlindSignature {
 
         //Validar firma
         boolean verificado = verifySignature(x, eServer, nServer, ficheroFirmado);
+
+
+        // Guardar firma
         if (verificado) {
             System.out.println("[CLIENTE]\tFirma realizada correctamente.");
             FileWriter fich = null;
             try {
                 System.out.println(this.filePath);
                 fich = new FileWriter(this.filePath + "/ficheroFirmado");
-                fich.write(IntegerToString(ficheroFirmado));
+                fich.write(IntegerToString(descipher(ficheroFirmado)));
                 fich.close();
             } catch (Exception ex) {
                 System.out.println("[ERROR]\tEscritura fichero.");
@@ -118,6 +113,7 @@ public class ClientBlindSignature {
             System.out.println("[CLIENTE]\tFirma no realizada correctamente.");
         }
         finaliza();
+        return true;
     }
 
 
@@ -132,7 +128,10 @@ public class ClientBlindSignature {
     public void pathFile(Path path){
         Path pathNoName = path.getParent();
         this.filePath= pathNoName.toString();
-        System.out.println("QUE ESTOY AQUI -> "+this.filePath);
+    }
+
+    public String getPathFile(){
+        return this.filePath;
     }
 
     private BigInteger enviaFichero(byte[] x) {
@@ -224,14 +223,12 @@ public class ClientBlindSignature {
      */
     private boolean verifySignature(BigInteger x, BigInteger eServer, BigInteger nServer, BigInteger fichFirmado) {
         System.out.println("[CLIENTE]\tVerifica firma.");
-
         BigInteger firma = fichFirmado.modPow(eServer, nServer);
 
         if (x.equals(firma)) {
             return true;
         }
         return false;
-
     }
 
     public BigInteger descipher(BigInteger y) {
@@ -262,7 +259,6 @@ public class ClientBlindSignature {
     }
 
     private String IntegerToString(BigInteger convert){
-
         String  converted = Base64.getEncoder().encodeToString(convert.toByteArray());
         return converted;
     }

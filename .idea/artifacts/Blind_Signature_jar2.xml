@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Blind-Signature:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Blind_Signature_jar2</output-path>
+    <root id="archive" name="Blind-Signature.jar">
+      <element id="module-output" name="Blind-Signature" />
+    </root>
+  </artifact>
+</component>

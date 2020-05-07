@@ -19,39 +19,24 @@ import java.io.Reader;
  * Vista del cliente
  */
 class VistaCliente extends JFrame implements ActionListener {
-    private JLabel texto;
-    private JLabel inicio;
-    private JRadioButton radio;
-    private JRadioButton radio2;
+    private JLabel texto,inicio,resultado;
+    private JRadioButton radio,radio2;
     ButtonGroup grupo;
-    private JButton btnBuscar;
-    private JButton btnBuscarE;
-    private JButton btnBuscarN;
-    private JButton btnBuscarD;
-    private JButton btnGenRSA;
-    private JButton btnGenRSA2;
-    private JButton btnPedirFirma;
-    private JTextField txt;
-    private JTextField claveE;
-    private JTextField claveN;
-    private JTextField claveD;
+    private JButton btnBuscar,btnBuscarE,btnBuscarN,btnBuscarD,btnGenRSA,btnGenRSA2,btnPedirFirma;
+    private JTextField txt,claveE,claveN,claveD;
     static byte[] archivo = new byte[0];
-    private String keyE="";
-    private String keyD="";
-    private String keyN="";
-
+    private String keyE, keyD,keyN;
     private ClientBlindSignature client;
-
 
     /**
      * Definición objetos de la vista
      */
     public VistaCliente(ClientBlindSignature cliente) {
-        super("Firma tu fichero");
+        super("Solicitud de firma");
 
         client = cliente;
 
-        inicio=new JLabel("Sistema de solicitud de firma ciega");
+        inicio=new JLabel("Solicitud de firma ciega");
         inicio.setBounds(50,10,300,40);
         inicio.setFont(new Font("Verdana", Font.BOLD, 16));
         grupo = new ButtonGroup();
@@ -75,13 +60,13 @@ class VistaCliente extends JFrame implements ActionListener {
         add(btnBuscar);
 
         radio = new JRadioButton();
-        radio.setText("Genera tu firma completa.");
+        radio.setText("Generar llaves");
         radio.setBounds(50,140,220,40);
         radio.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(radio);
         grupo.add(radio);
 
-        btnGenRSA = new JButton("Generar RSA");
+        btnGenRSA = new JButton("Generar llaves");
         btnGenRSA.addActionListener(this);
         btnGenRSA.setBounds(50,180,220,30);
         btnGenRSA.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -89,7 +74,7 @@ class VistaCliente extends JFrame implements ActionListener {
         //btnGenRSA.setEnabled(false);
 
         radio2 = new JRadioButton();
-        radio2.setText("Genera tu firma escogiendo tus claves.");
+        radio2.setText("Importar llaves");
         radio2.setBounds(50,240,300,30);
         radio2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(radio2);
@@ -125,17 +110,22 @@ class VistaCliente extends JFrame implements ActionListener {
         btnBuscarD.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscarD);
 
-        btnGenRSA2 = new JButton("Generar RSA");
+        btnGenRSA2 = new JButton("Importar llaves");
         btnGenRSA2.addActionListener(this);
         btnGenRSA2.setBounds(50,400,220,30);
         btnGenRSA2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnGenRSA2);
 
-        btnPedirFirma = new JButton("SOLICITAR FIRMA");
+        btnPedirFirma = new JButton("Cifrar y solicitar firma");
         btnPedirFirma.addActionListener(this);
         btnPedirFirma.setBounds(50,450,300,60);
         btnPedirFirma.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnPedirFirma);
+
+        resultado=new JLabel("");
+        resultado.setBounds(50,520,220,60);
+        resultado.setFont(new Font("Verdana", Font.PLAIN, 14));
+        add(resultado);
 
     }
 
@@ -173,13 +163,11 @@ class VistaCliente extends JFrame implements ActionListener {
             radio2.setSelected(false);
             //btnGenRSA.setEnabled(true);
             if (e.getSource() == btnGenRSA) {
-                client.initialRSA(archivo);
+                client.initialRSA();
             }
         }
         if (radio2.isSelected() == true) {
             radio.setSelected(false);
-
-            //TODO Cambiar, cuando se pulsa que genere rsa, genera el rsa pero no lo envía todavía
 
             if (e.getSource() == btnBuscarE) {
                 JFileChooser fileChooser = new JFileChooser();
@@ -285,14 +273,17 @@ class VistaCliente extends JFrame implements ActionListener {
             }
 
             if (e.getSource() == btnGenRSA2) {
-                client.initialRSA(archivo, keyE, keyN, keyD);
+                client.initialRSA(keyE, keyN, keyD);
             }
 
         }
 
         if(e.getSource() == btnPedirFirma) {
-            client.blindProcess(archivo);
-
+            if(client.blindProcess(archivo)){
+                resultado.setText("Documento firmado. Guardado en "+client.getPathFile());
+            }else{
+                resultado.setText("No se ha podido firmar.");
+            }
         }
     }
 }
