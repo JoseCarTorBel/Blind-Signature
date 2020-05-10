@@ -20,11 +20,13 @@ import java.io.Reader;
  */
 class VistaCliente extends JFrame implements ActionListener {
     private JLabel texto,inicio,resultado;
+
     private JRadioButton radio,radio2;
     ButtonGroup grupo;
-    private JButton btnBuscar,btnBuscarE,btnBuscarN,btnBuscarD,btnGenRSA,btnGenRSA2,btnPedirFirma;
+    private final JButton btnBuscar,btnBuscarE,btnBuscarN,btnBuscarD,btnGenRSA,btnGenRSA2,btnPedirFirma;
     private JTextField txt,claveE,claveN,claveD;
     static byte[] archivo = new byte[0];
+
     private String keyE, keyD,keyN;
     private ClientBlindSignature client;
 
@@ -67,6 +69,7 @@ class VistaCliente extends JFrame implements ActionListener {
         grupo.add(radio);
 
         btnGenRSA = new JButton("Generar llaves");
+
         btnGenRSA.addActionListener(this);
         btnGenRSA.setBounds(50,180,220,30);
         btnGenRSA.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -136,7 +139,6 @@ class VistaCliente extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (e.getSource() == btnBuscar) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -159,14 +161,18 @@ class VistaCliente extends JFrame implements ActionListener {
             }
         }
 
-        if (radio.isSelected() == true) {
+        if (radio.isSelected()) {
             radio2.setSelected(false);
-            //btnGenRSA.setEnabled(true);
+         //   btnGenRSA.setEnabled(true);
+
+            btnGenRSA2.setEnabled(false);
+
             if (e.getSource() == btnGenRSA) {
                 client.initialRSA();
             }
         }
-        if (radio2.isSelected() == true) {
+
+        if (radio2.isSelected()) {
             radio.setSelected(false);
 
             if (e.getSource() == btnBuscarE) {
@@ -225,6 +231,7 @@ class VistaCliente extends JFrame implements ActionListener {
                             BufferedReader b = new BufferedReader(targetReader);
                             int i=0;
                             while ((cadena = b.readLine()) != null) {
+                                // TODO -> Lo de 27 es por algo?
                                 if (i>0 && i<27)
                                     keyN+=cadena;
                                 i++;

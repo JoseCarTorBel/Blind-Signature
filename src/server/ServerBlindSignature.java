@@ -15,11 +15,11 @@ import java.net.ServerSocket;
 
 public class ServerBlindSignature {
 
-	Vista vista;
+//	Vista vista;
 
 	public static void main(String[] args) {
 		ServerBlindSignature server = new ServerBlindSignature();
-		server.ejecuta();
+		server.iniciaServer();
 	}
 
 	public void iniciaServer(){
@@ -30,66 +30,66 @@ public class ServerBlindSignature {
 			while (true) {
 				MyStreamSocket myDataSocket = new MyStreamSocket(myConnectionSocket.accept());
 				System.out.println("connection accepted");
-				Thread theThread = new Thread(new ThreadServerBlindSignature(myDataSocket,rsaAlgorithm));
+				Thread theThread = new Thread(new ThreadServerBlindSignature(myDataSocket, rsaAlgorithm));
 				theThread.start();
 			}
 		} catch (Exception ex) {
-			System.out.println("[ERROR]\tError conexion servidor");
+			System.out.println("[ERROR]\tError conexion servidor. Para servidor");
 			ex.printStackTrace();
 		}
 	}
 
-
-	private void ejecuta()  {
-		final Vista[] ventana = new Vista[1];
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				ventana[0] =new Vista();
-				ventana[0].setBounds(500,250,300,250);
-				ventana[0].setVisible(true);
-				ventana[0].setResizable(false);
-				ventana[0].setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			}
-		});
-	}
-
-	/**
-	 * Vista para iniciar el servidor
-	 */
-	private class Vista extends JFrame {
-		private JLabel texto;
-		private JButton enciendeServer;
-		private JButton pararServer;
-
-		public Vista() {
-			setLayout(null);
-
-			texto=new JLabel("Presione para encender el servidor.");
-			texto.setBounds(50,50,220,30);
-			add(texto);
-
-			enciendeServer=new JButton("Enciende server");
-			enciendeServer.setBounds(100,100,150,30);
-			enciendeServer.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent actionEvent) {
-					iniciaServer();
-				}
-			});
-			this.add(enciendeServer);
-
-			pararServer=new JButton("Apaga server");
-			pararServer.setBounds(100,140,150,30);
-			pararServer.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent actionEvent) {
-					System.exit(0);
-				}
-			});
-			this.add(pararServer);
-
-		}
-	}
+//
+//	private void ejecuta()  {
+//		final Vista[] ventana = new Vista[1];
+//
+//		SwingUtilities.invokeLater(new Runnable() {
+//			@Override
+//			public void run() {
+//				ventana[0] =new Vista();
+//				ventana[0].setBounds(500,250,300,250);
+//				ventana[0].setVisible(true);
+//				ventana[0].setResizable(false);
+//				ventana[0].setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//			}
+//		});
+//	}
+//
+//	/**
+//	 * Vista para iniciar el servidor
+//	 */
+//	private class Vista extends JFrame {
+//		private JLabel texto;
+//		private JButton enciendeServer;
+//		private JButton pararServer;
+//
+//		public Vista() {
+//			setLayout(null);
+//
+//			texto=new JLabel("Presione para encender el servidor.");
+//			texto.setBounds(50,50,220,30);
+//			add(texto);
+//
+//			enciendeServer=new JButton("Enciende server");
+//			enciendeServer.setBounds(100,100,150,30);
+//			enciendeServer.addActionListener(new ActionListener() {
+//				@Override
+//				public void actionPerformed(ActionEvent actionEvent) {
+//					iniciaServer();
+//				}
+//			});
+//			this.add(enciendeServer);
+//
+//			pararServer=new JButton("Apaga server");
+//			pararServer.setBounds(100,140,150,30);
+//			pararServer.addActionListener(new ActionListener() {
+//				@Override
+//				public void actionPerformed(ActionEvent actionEvent) {
+//					System.exit(0);
+//				}
+//			});
+//			this.add(pararServer);
+//
+//		}
+//	}
 }

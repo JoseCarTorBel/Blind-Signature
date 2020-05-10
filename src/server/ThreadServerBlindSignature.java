@@ -32,7 +32,7 @@ public class ThreadServerBlindSignature implements Runnable {
     }
 
 
-    public void run() { //Aqui debemos gestionar una sesion con un cliente
+    public void run() {
 
         boolean done = false;
         byte[] op;
@@ -54,7 +54,6 @@ public class ThreadServerBlindSignature implements Runnable {
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
                     byte[] fichero = myDataSocket.receiveMessage();
-                    //     System.out.println("Fichero:" + new BigInteger(fichero));
                     byte[] ficheroFirmado = realizaFirma(fichero,true);
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
@@ -91,7 +90,6 @@ public class ThreadServerBlindSignature implements Runnable {
             }
         } catch (Exception ex) {
             System.out.println("[ERROR]\tServer failed." + ex);
-            System.exit(1);
         }
     }
 

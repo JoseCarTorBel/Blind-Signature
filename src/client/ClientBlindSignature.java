@@ -44,6 +44,7 @@ public class ClientBlindSignature {
      */
     void initialRSA(){
         rsaAlgorithm = new RSA();
+        System.out.println("Hola, si me has pulsado. Cacho imbécil");
         //blindProcess(fichero);
     }
 
@@ -103,7 +104,8 @@ public class ClientBlindSignature {
             try {
                 System.out.println(this.filePath);
                 fich = new FileWriter(this.filePath + "/ficheroFirmado");
-                fich.write(IntegerToString(descipher(ficheroFirmado)));
+                fich.write(IntegerToString(ficheroFirmado));
+                System.out.println("El firmado -------- >"+IntegerToString(ficheroFirmado));
                 fich.close();
             } catch (Exception ex) {
                 System.out.println("[ERROR]\tEscritura fichero.");
@@ -248,6 +250,8 @@ public class ClientBlindSignature {
             e.printStackTrace();
         }
     }
+
+    //_____________________________________________________________________
 
     /**
      * Convertir de byte a Integer

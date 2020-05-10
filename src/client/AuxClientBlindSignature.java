@@ -67,6 +67,7 @@ public class AuxClientBlindSignature {
      */
     public byte[] enviaFichero(byte[] fichero) throws IOException {
         enviaPeticion(ENVIA_FICHERO);
+     //   System.out.println("FICHERO ------------------ > "+new BigInteger(fichero));
         mySocket.sendMessage(fichero,0,fichero.length);
         return mySocket.receiveMessage();
     }
