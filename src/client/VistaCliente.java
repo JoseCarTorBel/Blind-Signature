@@ -19,7 +19,7 @@ import java.io.Reader;
  * Vista del cliente
  */
 class VistaCliente extends JFrame implements ActionListener {
-    private JLabel texto,inicio,resultado;
+    private JLabel texto,inicio,resultado,resultado2;
 
     private JRadioButton radio,radio2;
     ButtonGroup grupo;
@@ -121,14 +121,19 @@ class VistaCliente extends JFrame implements ActionListener {
 
         btnPedirFirma = new JButton("Cifrar y solicitar firma");
         btnPedirFirma.addActionListener(this);
-        btnPedirFirma.setBounds(50,450,300,60);
+        btnPedirFirma.setBounds(50,450,300,40);
         btnPedirFirma.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnPedirFirma);
 
         resultado=new JLabel("");
-        resultado.setBounds(50,520,220,60);
+        resultado.setBounds(50,480,320,60);
         resultado.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado);
+
+        resultado2=new JLabel("");
+        resultado2.setBounds(50,510,320,60);
+        resultado2.setFont(new Font("Verdana", Font.PLAIN, 14));
+        add(resultado2);
 
     }
 
@@ -298,7 +303,8 @@ class VistaCliente extends JFrame implements ActionListener {
 
         if(e.getSource() == btnPedirFirma) {
             if(client.blindProcess(archivo)){
-                resultado.setText("Documento firmado. Guardado en "+client.getPathFile());
+                resultado.setText("Documento firmado. Guardado en: ");
+                resultado2.setText(client.getPathFile());
             }else{
                 resultado.setText("No se ha podido firmar.");
             }
