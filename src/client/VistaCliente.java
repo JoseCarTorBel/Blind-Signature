@@ -27,7 +27,7 @@ class VistaCliente extends JFrame implements ActionListener {
     private JTextField txt,claveE,claveN,claveD;
     static byte[] archivo = new byte[0];
 
-    private String keyE, keyD,keyN;
+    private String keyE="", keyD="",keyN="";
     private ClientBlindSignature client;
 
     /**
@@ -179,6 +179,7 @@ class VistaCliente extends JFrame implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 String cadena;
+                long ultima;
 
                 int result = fileChooser.showOpenDialog(this);
 
@@ -195,9 +196,12 @@ class VistaCliente extends JFrame implements ActionListener {
                             fileName.createNewFile();
                             Reader targetReader = new FileReader(fileName);
                             BufferedReader b = new BufferedReader(targetReader);
+                            ultima = b.lines().count();
+                            targetReader=new FileReader(fileName);
+                            b = new BufferedReader(targetReader);
                             int i=0;
                             while ((cadena = b.readLine()) != null) {
-                                if (i>0 && i<27)
+                                if (i>0 && i< ultima-1)
                                     keyE+=cadena;
                                 i++;
                             }
@@ -213,6 +217,7 @@ class VistaCliente extends JFrame implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 String cadena;
+                long ultima;
 
                 int result = fileChooser.showOpenDialog(this);
 
@@ -229,10 +234,12 @@ class VistaCliente extends JFrame implements ActionListener {
                             fileName.createNewFile();
                             Reader targetReader = new FileReader(fileName);
                             BufferedReader b = new BufferedReader(targetReader);
+                            ultima = b.lines().count();
+                            targetReader=new FileReader(fileName);
+                            b = new BufferedReader(targetReader);
                             int i=0;
                             while ((cadena = b.readLine()) != null) {
-                                // TODO -> Lo de 27 es por algo?
-                                if (i>0 && i<27)
+                                if (i>0 && i < ultima-1)
                                     keyN+=cadena;
                                 i++;
                             }
@@ -248,6 +255,7 @@ class VistaCliente extends JFrame implements ActionListener {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 String cadena;
+                long ultima;
 
                 int result = fileChooser.showOpenDialog(this);
 
@@ -264,9 +272,12 @@ class VistaCliente extends JFrame implements ActionListener {
                             fileName.createNewFile();
                             Reader targetReader = new FileReader(fileName);
                             BufferedReader b = new BufferedReader(targetReader);
+                            ultima = b.lines().count();
+                            targetReader=new FileReader(fileName);
+                            b = new BufferedReader(targetReader);
                             int i=0;
                             while ((cadena = b.readLine()) != null) {
-                                if (i>0 && i<27)
+                                if (i>0 && i< ultima-1)
                                     keyD+=cadena;
                                 i++;
                             }
