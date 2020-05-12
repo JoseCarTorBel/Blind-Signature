@@ -86,6 +86,7 @@ class VistaCliente extends JFrame implements ActionListener {
         claveE = new JTextField(30);
         claveE.setBounds(50,280,200,25);
         add(claveE);
+
         // Encripta con la E
         btnBuscarE = new JButton("Clave privada");
         btnBuscarE.addActionListener(this);
@@ -93,45 +94,36 @@ class VistaCliente extends JFrame implements ActionListener {
         btnBuscarE.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscarE);
 
-        claveN = new JTextField(30);
-        claveN.setBounds(50,320,200,25);
-        add(claveN);
-
-//        btnBuscarN = new JButton("Clave 'n'");
-//        btnBuscarN.addActionListener(this);
-//        btnBuscarN.setBounds(255,320,100,25);
-//        btnBuscarN.setFont(new Font("Verdana", Font.PLAIN, 14));
-//        add(btnBuscarN);
-
         claveD = new JTextField(30);
-        claveD.setBounds(50,360,200,25);
+        claveD.setBounds(50,320,200,25);
         add(claveD);
+
         // Desencripta con la n
         btnBuscarD = new JButton("Clave pública");
         btnBuscarD.addActionListener(this);
-        btnBuscarD.setBounds(255,360,100,25);
+        btnBuscarD.setBounds(255,320,100,25);
         btnBuscarD.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscarD);
 
         btnGenRSA2 = new JButton("Importar llaves");
         btnGenRSA2.addActionListener(this);
-        btnGenRSA2.setBounds(50,400,220,30);
+        btnGenRSA2.setBounds(50,360,220,30);
         btnGenRSA2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnGenRSA2);
 
         btnPedirFirma = new JButton("Cifrar y solicitar firma");
         btnPedirFirma.addActionListener(this);
-        btnPedirFirma.setBounds(50,450,300,40);
+        btnPedirFirma.setBounds(50,410,300,40);
         btnPedirFirma.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnPedirFirma);
 
         resultado=new JLabel("");
-        resultado.setBounds(50,480,320,60);
+        resultado.setBounds(50,450,320,60);
         resultado.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado);
 
         resultado2=new JLabel("");
-        resultado2.setBounds(50,510,320,60);
+        resultado2.setBounds(50,490,320,60);
         resultado2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado2);
 
