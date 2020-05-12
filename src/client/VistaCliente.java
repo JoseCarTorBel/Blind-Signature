@@ -23,7 +23,7 @@ class VistaCliente extends JFrame implements ActionListener {
 
     private JRadioButton radio,radio2;
     ButtonGroup grupo;
-    private final JButton btnBuscar,btnBuscarE,btnBuscarN,btnBuscarD,btnGenRSA,btnGenRSA2,btnPedirFirma;
+    private final JButton btnBuscar,btnBuscarE,btnBuscarD,btnGenRSA,btnGenRSA2,btnPedirFirma;
     private JTextField txt,claveE,claveN,claveD;
     static byte[] archivo = new byte[0];
 
@@ -86,8 +86,8 @@ class VistaCliente extends JFrame implements ActionListener {
         claveE = new JTextField(30);
         claveE.setBounds(50,280,200,25);
         add(claveE);
-
-        btnBuscarE = new JButton("Clave 'e'");
+        // Encripta con la E
+        btnBuscarE = new JButton("Clave privada");
         btnBuscarE.addActionListener(this);
         btnBuscarE.setBounds(255,280,100,25);
         btnBuscarE.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -97,17 +97,17 @@ class VistaCliente extends JFrame implements ActionListener {
         claveN.setBounds(50,320,200,25);
         add(claveN);
 
-        btnBuscarN = new JButton("Clave 'n'");
-        btnBuscarN.addActionListener(this);
-        btnBuscarN.setBounds(255,320,100,25);
-        btnBuscarN.setFont(new Font("Verdana", Font.PLAIN, 14));
-        add(btnBuscarN);
+//        btnBuscarN = new JButton("Clave 'n'");
+//        btnBuscarN.addActionListener(this);
+//        btnBuscarN.setBounds(255,320,100,25);
+//        btnBuscarN.setFont(new Font("Verdana", Font.PLAIN, 14));
+//        add(btnBuscarN);
 
         claveD = new JTextField(30);
         claveD.setBounds(50,360,200,25);
         add(claveD);
-
-        btnBuscarD = new JButton("Clave 'd'");
+        // Desencripta con la n
+        btnBuscarD = new JButton("Clave pública");
         btnBuscarD.addActionListener(this);
         btnBuscarD.setBounds(255,360,100,25);
         btnBuscarD.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -218,44 +218,6 @@ class VistaCliente extends JFrame implements ActionListener {
                 }
             }
 
-            if (e.getSource() == btnBuscarN) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                String cadena;
-                long ultima;
-
-                int result = fileChooser.showOpenDialog(this);
-
-                if (result != JFileChooser.CANCEL_OPTION) {
-
-                    File fileName = fileChooser.getSelectedFile();
-
-                    if ((fileName == null) || (fileName.getName().equals(""))) {
-                        claveN.setText("...");
-                    } else {
-                        // Con esto leemos el contenido de la clave
-                        try {
-                            claveN.setText(fileName.getAbsolutePath());
-                            fileName.createNewFile();
-                            Reader targetReader = new FileReader(fileName);
-                            BufferedReader b = new BufferedReader(targetReader);
-                            ultima = b.lines().count();
-                            targetReader=new FileReader(fileName);
-                            b = new BufferedReader(targetReader);
-                            int i=0;
-                            while ((cadena = b.readLine()) != null) {
-                                if (i>0 && i < ultima-1)
-                                    keyN+=cadena;
-                                i++;
-                            }
-                            b.close();
-                        } catch (Exception ex) {
-                            System.out.println("Algo ha ido mal con el fichero");
-                        }
-                    }
-                }
-            }
-
             if (e.getSource() == btnBuscarD) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -296,7 +258,7 @@ class VistaCliente extends JFrame implements ActionListener {
             }
 
             if (e.getSource() == btnGenRSA2) {
-                client.initialRSA(keyE, keyN, keyD);
+                client.initialRSA(keyE, keyD);
             }
 
         }

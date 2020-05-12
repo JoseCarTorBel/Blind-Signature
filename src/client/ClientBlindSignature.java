@@ -52,16 +52,13 @@ public class ClientBlindSignature {
     /**
      * Crea RSA a partir de las llaves dadas
      * @param e Llave e
-     * @param n Módulo
      * @param d Llave d
      */
-    void initialRSA(String e, String n, String d) {
+    void initialRSA(String e, String d) {
 
         BigInteger keyE = stringToBigInteger(e);
-        BigInteger keyN = stringToBigInteger(n);
         BigInteger keyD = stringToBigInteger(d);
-
-        rsaAlgorithm = new RSA(keyD, keyE, keyN);
+        rsaAlgorithm = new RSA(keyD, keyE);
         //blindProcess(fichero);
 
     }

@@ -32,10 +32,10 @@ public class RSA {
         d=e.modInverse(phi);
     }
 
-    public RSA( BigInteger d, BigInteger e, BigInteger n){
+    public RSA( BigInteger d, BigInteger e){
         this.d=d;
         this.e=e;
-        this.n=n;
+        this.n=d.multiply(d);
     }
 
     public BigInteger encrypt(BigInteger m){
