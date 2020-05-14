@@ -40,6 +40,7 @@ public class AuxClientBlindSignature {
 
         }
     }
+
     // ******** IMPLEMENTACIÓN DE LA FIRMA TOTALMENTE CIEGA *******
     private void enviaPeticion(String peticion) throws IOException {
         byte[] encodedString = Base64.getEncoder().encodeToString(peticion.getBytes()).getBytes();
@@ -79,4 +80,7 @@ public class AuxClientBlindSignature {
         enviaPeticion(FINALIZA);
         mySocket.close();
     }
+
+    public String getHostAndPort(){
+        return serverHost+" en puerto "+serverPort;    }
 }

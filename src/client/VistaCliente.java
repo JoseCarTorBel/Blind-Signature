@@ -21,7 +21,7 @@ import java.util.Base64;
  * Vista del cliente
  */
 class VistaCliente extends JFrame implements ActionListener {
-    private JLabel texto,inicio,resultado,resultado2;
+    private JLabel texto,inicio,resultado,resultado2,conecText,conecText2;
 
     private JRadioButton radio,radio2;
     ButtonGroup grupo;
@@ -29,7 +29,7 @@ class VistaCliente extends JFrame implements ActionListener {
     private JTextField txt,claveE,claveN,claveD;
     String archivo="";
 
-    private String keyE="", keyD="",keyN="";
+    private String keyE="", keyD="";
     private ClientBlindSignature client;
 
     /**
@@ -41,31 +41,41 @@ class VistaCliente extends JFrame implements ActionListener {
         client = cliente;
 
         inicio=new JLabel("Solicitud de firma ciega");
-        inicio.setBounds(50,10,300,40);
-        inicio.setFont(new Font("Verdana", Font.BOLD, 16));
+        inicio.setBounds(50,0,300,40);
+        inicio.setFont(new Font("Verdana", Font.BOLD, 17));
         grupo = new ButtonGroup();
         add(inicio);
         setLayout(null);
 
+        conecText=new JLabel("   Conexion establecida con:");
+        conecText.setBounds(50,15,320,60);
+        conecText.setFont(new Font("Verdana", Font.PLAIN, 14));
+        add(conecText);
+
+        conecText2=new JLabel("   " + client.getHostAndPort());
+        conecText2.setBounds(50,35,340,60);
+        conecText2.setFont(new Font("Verdana", Font.PLAIN, 14));
+        add(conecText2);
+
         texto=new JLabel("Sube aquí tu fichero.");
-        texto.setBounds(50,40,220,40);
+        texto.setBounds(50,70,220,40);
         texto.setFont(new Font("Verdana", Font.PLAIN, 14));
         grupo = new ButtonGroup();
         add(texto);
 
         txt = new JTextField(30);
-        txt.setBounds(50,80,300,25);
+        txt.setBounds(50,110,300,25);
         add(txt);
 
         btnBuscar = new JButton("Buscar...");
         btnBuscar.addActionListener(this);
-        btnBuscar.setBounds(50,110,100,25);
+        btnBuscar.setBounds(50,140,100,25);
         btnBuscar.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscar);
 
         radio = new JRadioButton();
         radio.setText("Generar llaves");
-        radio.setBounds(50,140,220,40);
+        radio.setBounds(50,170,220,40);
         radio.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(radio);
         grupo.add(radio);
@@ -73,59 +83,59 @@ class VistaCliente extends JFrame implements ActionListener {
         btnGenRSA = new JButton("Generar llaves");
 
         btnGenRSA.addActionListener(this);
-        btnGenRSA.setBounds(50,180,220,30);
+        btnGenRSA.setBounds(50,210,220,30);
         btnGenRSA.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnGenRSA);
         //btnGenRSA.setEnabled(false);
 
         radio2 = new JRadioButton();
         radio2.setText("Importar llaves");
-        radio2.setBounds(50,240,300,30);
+        radio2.setBounds(50,260,300,30);
         radio2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(radio2);
         grupo.add(radio2);
 
         claveE = new JTextField(30);
-        claveE.setBounds(50,280,200,25);
+        claveE.setBounds(50,300,200,25);
         add(claveE);
 
         // Encripta con la E
         btnBuscarE = new JButton("Clave privada");
         btnBuscarE.addActionListener(this);
-        btnBuscarE.setBounds(255,280,100,25);
-        btnBuscarE.setFont(new Font("Verdana", Font.PLAIN, 14));
+        btnBuscarE.setBounds(255,300,125,25);
+        btnBuscarE.setFont(new Font("Verdana", Font.PLAIN, 13));
         add(btnBuscarE);
 
         claveD = new JTextField(30);
-        claveD.setBounds(50,320,200,25);
+        claveD.setBounds(50,340,200,25);
         add(claveD);
 
         // Desencripta con la n
         btnBuscarD = new JButton("Clave pública");
         btnBuscarD.addActionListener(this);
-        btnBuscarD.setBounds(255,320,100,25);
-        btnBuscarD.setFont(new Font("Verdana", Font.PLAIN, 14));
+        btnBuscarD.setBounds(255,340,125,25);
+        btnBuscarD.setFont(new Font("Verdana", Font.PLAIN, 13));
         add(btnBuscarD);
 
         btnGenRSA2 = new JButton("Importar llaves");
         btnGenRSA2.addActionListener(this);
-        btnGenRSA2.setBounds(50,360,220,30);
+        btnGenRSA2.setBounds(50,380,220,30);
         btnGenRSA2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnGenRSA2);
 
         btnPedirFirma = new JButton("Cifrar y solicitar firma");
         btnPedirFirma.addActionListener(this);
-        btnPedirFirma.setBounds(50,410,300,40);
+        btnPedirFirma.setBounds(50,460,300,40);
         btnPedirFirma.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnPedirFirma);
 
         resultado=new JLabel("");
-        resultado.setBounds(50,450,320,60);
+        resultado.setBounds(50,500,320,60);
         resultado.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado);
 
         resultado2=new JLabel("");
-        resultado2.setBounds(50,490,320,60);
+        resultado2.setBounds(50,530,320,60);
         resultado2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado2);
 

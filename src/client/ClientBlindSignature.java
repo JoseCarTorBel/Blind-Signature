@@ -49,6 +49,9 @@ public class ClientBlindSignature {
         //blindProcess(fichero);
     }
 
+    public String getHostAndPort(){
+        return socket.getHostAndPort();    }
+
 
     /**
      * Crea RSA a partir de las llaves dadas
