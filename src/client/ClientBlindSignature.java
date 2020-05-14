@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
@@ -72,13 +73,22 @@ public class ClientBlindSignature {
      * @return boolean  Devuelve si ha habido error o no a la vista
      * @param fichero Fichero que debe ser firmado.
      */
-    boolean blindProcess(byte[] fichero){
-        if(fichero.length==0){
+    boolean blindProcess(String fichero){
+        if(fichero==null){
             return false;
         }
         generateOpacityFactorK();
 
-        BigInteger ficheroHash = creaHashFichero(fichero);
+        System.out.println("EL MAGINIFICO FICHERO ->>>>>>>>>> "+fichero);
+        System.out.println(stringToBigInteger(fichero));
+        BigInteger ficheroHash = creaHashFichero(stringToBigInteger(fichero));
+
+        System.out.println("\nEL MAGINIFICO HASH:::::"+ficheroHash);
+        System.out.println("DESCIFRADO, A LO LOCO->>"+IntegerToString(descipher(ficheroHash)));
+
+
+
+
         BigInteger eServer = recibeE();
         BigInteger nServer = recibeN();
 
@@ -101,8 +111,8 @@ public class ClientBlindSignature {
             try {
                 System.out.println(this.filePath);
                 fich = new FileWriter(this.filePath + "/ficheroFirmado");
-                fich.write(IntegerToString(ficheroFirmado));
-                System.out.println("El firmado -------- >"+IntegerToString(ficheroFirmado));
+                fich.write(IntegerToString(descipher(ficheroFirmado)));
+                System.out.println("El firmado -------- >"+IntegerToString(descipher(ficheroFirmado)));
                 fich.close();
             } catch (Exception ex) {
                 System.out.println("[ERROR]\tEscritura fichero.");
@@ -190,10 +200,10 @@ public class ClientBlindSignature {
         }
     }
 
-    private BigInteger creaHashFichero(byte[] fichero) {
+    private BigInteger creaHashFichero(BigInteger fichero) {
         System.out.println("[CLIENTE]\tRealiza hash.");
-
-        return rsaAlgorithm.decrypt(new BigInteger(fichero));
+        System.out.println(fichero);
+        return rsaAlgorithm.encrypt(fichero);
     }
 
     /**
@@ -254,13 +264,23 @@ public class ClientBlindSignature {
      * Convertir de byte a Integer
      */
     private BigInteger stringToBigInteger(String convert) {
-        byte[] encodedString = Base64.getEncoder().encodeToString(convert.getBytes()).getBytes();
+        byte[] encodedString = Base64.getEncoder().encodeToString(convert.getBytes(StandardCharsets.UTF_8)).getBytes();
         BigInteger inte = new BigInteger(encodedString);
         return inte;
     }
 
     private String IntegerToString(BigInteger convert){
-        String  converted = Base64.getEncoder().encodeToString(convert.toByteArray());
+
+//        String converted = Base64.getEncoder().encodeToString(convert.toByteArray());
+//        System.out.println(converted);
+        System.out.println(convert);
+
+        System.out.println("Convert "+convert.toByteArray());
+        System.out.println("Base64 "+Base64.getDecoder().decode(convert.toByteArray()));
+
+        String converted = new String(Base64.getDecoder().decode(convert.toByteArray()));
+
+        System.out.println("String "+converted);
         return converted;
     }
 }

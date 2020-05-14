@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.util.Base64;
 
 
 //**********************************************************
@@ -25,7 +27,7 @@ class VistaCliente extends JFrame implements ActionListener {
     ButtonGroup grupo;
     private final JButton btnBuscar,btnBuscarE,btnBuscarD,btnGenRSA,btnGenRSA2,btnPedirFirma;
     private JTextField txt,claveE,claveN,claveD;
-    static byte[] archivo = new byte[0];
+    String archivo="";
 
     private String keyE="", keyD="",keyN="";
     private ClientBlindSignature client;
@@ -151,8 +153,18 @@ class VistaCliente extends JFrame implements ActionListener {
                 } else {
                     txt.setText(fileName.getAbsolutePath());
                     client.pathFile(fileName.toPath());
-                    archivo = txt.toString().getBytes();
-                    //System.out.println(txt);
+                    try {
+                        Reader targetReader = new FileReader(fileName);
+                        BufferedReader fich = new BufferedReader(targetReader);
+                        String cadena;
+                        int i = 0;
+                        while ((cadena = fich.readLine()) != null) {
+                           archivo+=cadena;
+                        }
+                    }catch (Exception ex){}
+
+
+                //    System.out.println(txt.toString());
                     //System.out.println(archivo.length);
                 }
             }

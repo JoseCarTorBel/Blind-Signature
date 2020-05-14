@@ -9,6 +9,9 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Base64;
 
+/**
+ * Clase auxilair conexión sockets.
+ */
 public class AuxClientBlindSignature {
 
     private MyStreamSocket mySocket;
@@ -76,32 +79,4 @@ public class AuxClientBlindSignature {
         enviaPeticion(FINALIZA);
         mySocket.close();
     }
-
-
-
-
-
-    // TODO this:
-    //***************** FIRMA PARCIALMENTE CIEGA, NO IMPLEMENTADO TODAVÁIA: ********
-    public int recibePeticionFichero() {
-
-        byte[] respuesta = new byte[0];
-        try {
-            respuesta = mySocket.receiveMessage();
-        } catch (IOException e) {
-            System.out.println("[ ERROR ]\tRebiendo mensaje. "+e);
-            System.exit(1);
-        }
-        BigInteger resp = new BigInteger(respuesta);
-        return resp.intValue();
-    }
-
-
-    public void enviaFicheros(byte[][] ficheros) throws IOException {
-
-        for(int i =0; i<ficheros.length; i++) {
-            mySocket.sendMessage(ficheros[i], 0, ficheros[i].length);
-        }
-    }
-
 }

@@ -4,9 +4,13 @@ import comun.MyStreamSocket;
 import firma.RSA;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -27,10 +31,12 @@ public class ServerBlindSignature {
 
 		try (ServerSocket myConnectionSocket = new ServerSocket(1099)) {
 			System.out.println("[SERVER]\tIniciado servidor.");
+
 			while (true) {
 				MyStreamSocket myDataSocket = new MyStreamSocket(myConnectionSocket.accept());
 				System.out.println("connection accepted");
 				Thread theThread = new Thread(new ThreadServerBlindSignature(myDataSocket, rsaAlgorithm));
+
 				theThread.start();
 			}
 		} catch (Exception ex) {
@@ -38,6 +44,9 @@ public class ServerBlindSignature {
 			ex.printStackTrace();
 		}
 	}
+	
+	
+
 
 //
 //	private void ejecuta()  {
