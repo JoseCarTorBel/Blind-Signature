@@ -278,7 +278,8 @@ public class ClientBlindSignature {
      * Convertir de byte a Integer
      */
     private BigInteger stringToBigInteger(String convert) {
-        byte[] encodedString = Base64.getEncoder().encodeToString(convert.getBytes(StandardCharsets.UTF_8)).getBytes();
+//        byte[] encodedString = Base64.getEncoder().encodeToString(convert.getBytes(StandardCharsets.UTF_8)).getBytes();
+        byte[] encodedString = convert.getBytes(StandardCharsets.UTF_8);
         BigInteger inte = new BigInteger(encodedString);
         return inte;
     }
@@ -287,14 +288,15 @@ public class ClientBlindSignature {
 
 //        String converted = Base64.getEncoder().encodeToString(convert.toByteArray());
 //        System.out.println(converted);
-        System.out.println(convert);
-
-        System.out.println("Convert "+convert.toByteArray());
-        System.out.println("Base64 "+Base64.getDecoder().decode(convert.toByteArray()));
-
-        String converted = new String(Base64.getDecoder().decode(convert.toByteArray()));
-
-        System.out.println("String "+converted);
+//        System.out.println(convert);
+//
+//        System.out.println("Convert "+convert.toByteArray());
+//        System.out.println("Base64 "+Base64.getDecoder().decode(convert.toByteArray()));
+//
+//        String converted = new String(Base64.getDecoder().decode(convert.toByteArray()));
+//
+//        System.out.println("String "+converted);
+        String converted = new String(convert.toByteArray());
         return converted;
     }
 }

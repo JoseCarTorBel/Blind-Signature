@@ -51,7 +51,7 @@ public class ThreadServerBlindSignature implements Runnable {
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
                     byte[] fichero = myDataSocket.receiveMessage();
-                    byte[] ficheroFirmado = realizaFirma(fichero,true);
+                    byte[] ficheroFirmado = realizaFirma(fichero);
 
                     myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
 
@@ -59,30 +59,6 @@ public class ThreadServerBlindSignature implements Runnable {
                     BigInteger n = rsaAlgorithm.getn();
                     byte[] nByte = n.toByteArray();
                     myDataSocket.sendMessage(nByte, 0, nByte.length);
-
-                }else if(opcion.equals(RECIBE_FICHEROS)){
-                    int j  = pidej();
-                    byte[] jB = {(byte) j};
-                    myDataSocket.sendMessage(jB,0,jB.length);
-
-                    List<byte[]> ficheros=new ArrayList<byte[]>();
-                    List<byte[]> factores = new ArrayList<byte[]>();
-
-                    for(int f=0; f<N-1;f++){
-                        ficheros.add(myDataSocket.receiveMessage());
-                        factores.add(myDataSocket.receiveMessage());
-                    }
-                    // Envía 0 si es False, Envía 1 si es True.
-                    if(validaFicheros(ficheros,factores, N)) {
-                        myDataSocket.sendMessage(new byte[]{(byte) 0}, 0, jB.length);
-                    }else {
-                        myDataSocket.sendMessage(new byte[]{(byte) 1}, 0, jB.length);
-                    }
-
-                } else {    /** Termina operación */
-                    System.out.println("[SERVER]\tProceso terminado.\n\tEXIT");
-                    myDataSocket.close();
-                    done = true;
                 }
             }
         } catch (Exception ex) {
@@ -91,58 +67,15 @@ public class ThreadServerBlindSignature implements Runnable {
     }
 
 
-    private byte[] realizaFirma(byte[] fichero, boolean esTotal) {
+    private byte[] realizaFirma(byte[] fichero) {
         System.out.println("[SERVER]\nRealiza firma.");
-        if(esTotal){
-            BigInteger x = new BigInteger(fichero);
-            BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
-            //byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
-            // System.out.println("y= "+y);
-            return y.toByteArray();
-        }
-
-        BigInteger x = new BigInteger(Arrays.copyOf(fichero,fichero.length-N));
+        BigInteger x = new BigInteger(fichero);
+        System.out.println("La x:"+x);
         BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
         //byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
-        // System.out.println("y= "+y);
+         System.out.println("y= "+y);
         return y.toByteArray();
+
     }
 
-
-
-
-
-
-//_____________________________________________________________________________________
-
-    /**
-     * Genera el J que le pide al cliente
-     * @return int  Devulve la J
-     */
-    private int pidej(){
-        return (int) Math.random()* RETO +1;
-    }
-
-
-    /**
-     * Valida que los ficheros sean iguales.
-     *
-     * @param ficheros  Ficheros a validar
-     * @param factores  Factores K a validar
-     * @param lengthCompRandom  Longitud de la parte random.
-     * @return  Si se han podido validar o no.
-     */
-    private boolean validaFicheros(List<byte[]> ficheros,List<byte[]> factores, int lengthCompRandom) {
-        for(int i=1;i<ficheros.size();i++){
-            if(     !   Arrays.equals(  Arrays.copyOf(ficheros.get(i-1),ficheros.get(i-1).length-lengthCompRandom),
-                        Arrays.copyOf(ficheros.get(i),ficheros.get(i).length-lengthCompRandom))
-                        &&
-                    !   factores.get(i-1).equals(factores.get(i))                               ) {
-
-                    return false;
-            }
-        }
-
-        return true;
-    }
 }
