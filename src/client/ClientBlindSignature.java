@@ -110,14 +110,25 @@ public class ClientBlindSignature {
         // Guardar firma
         if (verificado) {
             System.out.println("[CLIENTE]\tFirma realizada correctamente.");
-            FileWriter fich = null;
+//            FileWriter fich = null;
+//            try {
+//                System.out.println(this.filePath);
+//                fich = new FileWriter(this.filePath + "/ficheroFirmado");
+//                fich.write(IntegerToString(descipher(ficheroFirmado)));
+//                System.out.println("El firmado -------- >"+IntegerToString(descipher(ficheroFirmado)));
+//                fich.close();
+//            } catch (Exception ex) {
+//                System.out.println("[ERROR]\tEscritura fichero.");
+//                ex.printStackTrace();
+//            }
+
+            byte[] data = descipher(ficheroFirmado).toByteArray();
             try {
-                System.out.println(this.filePath);
-                fich = new FileWriter(this.filePath + "/ficheroFirmado");
-                fich.write(IntegerToString(descipher(ficheroFirmado)));
-                System.out.println("El firmado -------- >"+IntegerToString(descipher(ficheroFirmado)));
-                fich.close();
-            } catch (Exception ex) {
+                OutputStream stream = new FileOutputStream(this.filePath + "/ficheroFirmado");
+                stream.write(data);
+                System.out.println(data);
+                stream.close();
+            }catch(Exception ex){
                 System.out.println("[ERROR]\tEscritura fichero.");
                 ex.printStackTrace();
             }
