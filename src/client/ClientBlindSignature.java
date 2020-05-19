@@ -2,17 +2,13 @@ package client;
 
 import firma.RSA;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -45,8 +41,6 @@ public class ClientBlindSignature {
      */
     void initialRSA(){
         rsaAlgorithm = new RSA();
-        System.out.println("Hola, si me has pulsado. Cacho imbécil");
-        //blindProcess(fichero);
     }
 
     public String getHostAndPort(){
@@ -59,12 +53,12 @@ public class ClientBlindSignature {
      * @param d Llave d
      */
     void initialRSA(String e, String d) {
+        System.out.println("E: "+e);
+        System.out.println("D: "+d);
 
         BigInteger keyE = stringToBigInteger(e);
         BigInteger keyD = stringToBigInteger(d);
         rsaAlgorithm = new RSA(keyD, keyE);
-        //blindProcess(fichero);
-
     }
 
     /**
@@ -161,7 +155,6 @@ public class ClientBlindSignature {
 
         BigInteger ficheroFirmado = null;
         try {
-           // System.out.println("[CLIENTE]\tEnvía la X.");
             byte[] fichero = socket.enviaFichero(x);
             //System.out.println("Firmado: "+new BigInteger(ficheroFirmado));
             return new BigInteger(fichero);
@@ -177,9 +170,7 @@ public class ClientBlindSignature {
         byte[] e = new byte[0];
         try {
             e = socket.pideE();
-            //   System.out.println(e);
         } catch (IOException ex) {
-            // System.out.println("[ ERROR ]\tRecibiendo e. "+ex);
             System.exit(1);
         }
         BigInteger eInt = new BigInteger(e);

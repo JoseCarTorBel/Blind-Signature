@@ -211,20 +211,26 @@ class VistaCliente extends JFrame implements ActionListener {
                     } else {
                         // Con esto leemos el contenido de la clave
                         try {
+                            String privateKeyContent = new String(Files.readAllBytes(fileName.toPath()));
+                            privateKeyContent = privateKeyContent.replaceAll("\\n", "").replace("-----BEGIN RSA PRIVATE KEY-----", "").replace("-----END RSA PRIVATE KEY-----", "");
+                            keyE=privateKeyContent;
+                            System.out.println(keyE);
+
+
                             claveE.setText(fileName.getAbsolutePath());
-                            fileName.createNewFile();
-                            Reader targetReader = new FileReader(fileName);
-                            BufferedReader b = new BufferedReader(targetReader);
-                            ultima = b.lines().count();
-                            targetReader=new FileReader(fileName);
-                            b = new BufferedReader(targetReader);
-                            int i=0;
-                            while ((cadena = b.readLine()) != null) {
-                                if (i>0 && i< ultima-1)
-                                    keyE+=cadena;
-                                i++;
-                            }
-                            b.close();
+//                            fileName.createNewFile();
+//                            Reader targetReader = new FileReader(fileName);
+//                            BufferedReader b = new BufferedReader(targetReader);
+//                            ultima = b.lines().count();
+//                            targetReader=new FileReader(fileName);
+//                            b = new BufferedReader(targetReader);
+//                            int i=0;
+//                            while ((cadena = b.readLine()) != null) {
+//                                if (i>0 && i< ultima-1)
+//                                    keyE+=cadena;
+//                                i++;
+//                            }
+//                            b.close();
                         } catch (Exception ex) {
                             System.out.println("Algo ha ido mal con el fichero");
                         }
