@@ -125,17 +125,17 @@ class VistaCliente extends JFrame implements ActionListener {
 
         btnPedirFirma = new JButton("Cifrar y solicitar firma");
         btnPedirFirma.addActionListener(this);
-        btnPedirFirma.setBounds(50,460,300,40);
+        btnPedirFirma.setBounds(50,440,300,40);
         btnPedirFirma.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnPedirFirma);
 
         resultado=new JLabel("");
-        resultado.setBounds(50,500,320,60);
+        resultado.setBounds(50,480,320,60);
         resultado.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado);
 
         resultado2=new JLabel("");
-        resultado2.setBounds(50,530,320,60);
+        resultado2.setBounds(50,500,320,60);
         resultado2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado2);
 
@@ -211,26 +211,31 @@ class VistaCliente extends JFrame implements ActionListener {
                     } else {
                         // Con esto leemos el contenido de la clave
                         try {
-                            String privateKeyContent = new String(Files.readAllBytes(fileName.toPath()));
-                            privateKeyContent = privateKeyContent.replaceAll("\\n", "").replace("-----BEGIN RSA PRIVATE KEY-----", "").replace("-----END RSA PRIVATE KEY-----", "");
-                            keyE=privateKeyContent;
-                            System.out.println(keyE);
+//                            String privateKeyContent = new String(Files.readAllBytes(fileName.toPath()));
+//                            privateKeyContent = privateKeyContent.replaceAll("\\n", "").replace("-----BEGIN RSA PRIVATE KEY-----", "").replace("-----END RSA PRIVATE KEY-----", "");
+//                            keyE=privateKeyContent;
+//                            System.out.println(keyE);
 
 
                             claveE.setText(fileName.getAbsolutePath());
-//                            fileName.createNewFile();
-//                            Reader targetReader = new FileReader(fileName);
-//                            BufferedReader b = new BufferedReader(targetReader);
-//                            ultima = b.lines().count();
-//                            targetReader=new FileReader(fileName);
-//                            b = new BufferedReader(targetReader);
-//                            int i=0;
-//                            while ((cadena = b.readLine()) != null) {
-//                                if (i>0 && i< ultima-1)
-//                                    keyE+=cadena;
-//                                i++;
-//                            }
-//                            b.close();
+                            fileName.createNewFile();
+                            Reader targetReader = new FileReader(fileName);
+                            BufferedReader b = new BufferedReader(targetReader);
+                            ultima = b.lines().count();
+                            targetReader=new FileReader(fileName);
+                            b = new BufferedReader(targetReader);
+                            int i=0;
+                            while ((cadena = b.readLine()) != null) {
+                                if (i==0){
+                                    if (!cadena.equals("-----BEGIN RSA PRIVATE KEY-----"))
+                                        resultado.setText("Llave incorrecta (Debe ser RSA)");
+                                }
+                                if (i>2 && i< ultima-1)
+                                    keyE+=cadena;
+                                i++;
+                            }
+                            System.out.println("keyE: " + keyE);
+                            b.close();
                         } catch (Exception ex) {
                             System.out.println("Algo ha ido mal con el fichero");
                         }
