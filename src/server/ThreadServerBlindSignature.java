@@ -1,13 +1,10 @@
 package server;
 import comun.MyStreamSocket;
-import firma.RSA;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import java.lang.reflect.Array;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
 public class ThreadServerBlindSignature implements Runnable {
     MyStreamSocket myDataSocket;
@@ -41,28 +38,45 @@ public class ThreadServerBlindSignature implements Runnable {
 
 
                 if (opcion.equals(PIDE_E)) {
-                    // Pasamos a byte el big integer
                     BigInteger e = rsaAlgorithm.gete();
-                    // System.out.println("E -> "+e);
 
                     byte[] eSended = e.toByteArray();
-
                     myDataSocket.sendMessage(eSended, 0, eSended.length);
 
                 } else if (opcion.equals(RECIBE_FICHERO)) {
-                    byte[] fichero = myDataSocket.receiveMessage();
-                    byte[] ficheroFirmado = realizaFirma(fichero);
+                    String hola =new String(Base64.getDecoder().decode(myDataSocket.receiveMessage()));
+                    Integer numBloc = Integer.parseInt(hola);
 
-                    myDataSocket.sendMessage(ficheroFirmado, 0, ficheroFirmado.length);
+
+                    System.out.println("Num bloc "+hola);
+
+                    ArrayList<byte[]> fichero = new ArrayList<byte[]>(numBloc);
+                    ArrayList<byte[]> ficheroFirmado = new ArrayList<byte[]>(numBloc);
+
+
+                    for(int i =0; i< numBloc; i++) {
+                        byte[] fich = myDataSocket.receiveMessage();
+                        fichero.add(fich);
+                        ficheroFirmado.add(realizaFirma(fich));
+                    }
+
+                    for(int i =0; i<numBloc; i++) {
+                        myDataSocket.sendMessage(ficheroFirmado.get(i), 0, ficheroFirmado.get(i).length);
+                    }
+
 
                 }else if(opcion.equals(PIDE_N)) {
                     BigInteger n = rsaAlgorithm.getn();
                     byte[] nByte = n.toByteArray();
                     myDataSocket.sendMessage(nByte, 0, nByte.length);
+                }else {
+                    done=true;
+                    myDataSocket.close();
                 }
             }
         } catch (Exception ex) {
             System.out.println("[ERROR]\tServer failed." + ex);
+            ex.printStackTrace();
         }
     }
 
@@ -70,10 +84,9 @@ public class ThreadServerBlindSignature implements Runnable {
     private byte[] realizaFirma(byte[] fichero) {
         System.out.println("[SERVER]\nRealiza firma.");
         BigInteger x = new BigInteger(fichero);
-        System.out.println("La x:"+x);
+
         BigInteger y = x.modPow(rsaAlgorithm.getd(), rsaAlgorithm.getn());
-        //byte[] ySigned = Base64.getDecoder().decode(y.toByteArray());
-         System.out.println("y= "+y);
+
         return y.toByteArray();
 
     }

@@ -21,15 +21,18 @@ import java.util.Base64;
  * Vista del cliente
  */
 class VistaCliente extends JFrame implements ActionListener {
+
+    private static final long serialVersionUID = 1L;
+
     private JLabel texto,inicio,resultado,resultado2,conecText,conecText2;
 
-    private JRadioButton radio,radio2;
     ButtonGroup grupo;
-    private final JButton btnBuscar,btnBuscarE,btnBuscarD,btnGenRSA,btnGenRSA2,btnPedirFirma;
-    private JTextField txt,claveE,claveN,claveD;
+    private final JButton btnBuscar,btnPedirFirma;
+    private JTextField txt;
     String archivo="";
 
-    private String keyE="", keyD="";
+    private File fileName=null;
+
     private ClientBlindSignature client;
 
     /**
@@ -73,57 +76,8 @@ class VistaCliente extends JFrame implements ActionListener {
         btnBuscar.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(btnBuscar);
 
-        radio = new JRadioButton();
-        radio.setText("Generar llaves");
-        radio.setBounds(50,170,220,40);
-        radio.setFont(new Font("Verdana", Font.PLAIN, 14));
-        add(radio);
-        grupo.add(radio);
 
-        btnGenRSA = new JButton("Generar llaves");
-
-        btnGenRSA.addActionListener(this);
-        btnGenRSA.setBounds(50,210,220,30);
-        btnGenRSA.setFont(new Font("Verdana", Font.PLAIN, 14));
-        add(btnGenRSA);
-        //btnGenRSA.setEnabled(false);
-
-        radio2 = new JRadioButton();
-        radio2.setText("Importar llaves");
-        radio2.setBounds(50,260,300,30);
-        radio2.setFont(new Font("Verdana", Font.PLAIN, 14));
-        add(radio2);
-        grupo.add(radio2);
-
-        claveE = new JTextField(30);
-        claveE.setBounds(50,300,200,25);
-        add(claveE);
-
-        // Encripta con la E
-        btnBuscarE = new JButton("Clave privada");
-        btnBuscarE.addActionListener(this);
-        btnBuscarE.setBounds(255,300,125,25);
-        btnBuscarE.setFont(new Font("Verdana", Font.PLAIN, 13));
-        add(btnBuscarE);
-
-        claveD = new JTextField(30);
-        claveD.setBounds(50,340,200,25);
-        add(claveD);
-
-        // Desencripta con la n
-        btnBuscarD = new JButton("Clave pública");
-        btnBuscarD.addActionListener(this);
-        btnBuscarD.setBounds(255,340,125,25);
-        btnBuscarD.setFont(new Font("Verdana", Font.PLAIN, 13));
-        add(btnBuscarD);
-
-        btnGenRSA2 = new JButton("Importar llaves");
-        btnGenRSA2.addActionListener(this);
-        btnGenRSA2.setBounds(50,380,220,30);
-        btnGenRSA2.setFont(new Font("Verdana", Font.PLAIN, 14));
-        add(btnGenRSA2);
-
-        btnPedirFirma = new JButton("Cifrar y solicitar firma");
+        btnPedirFirma = new JButton("Solicitu tu firma");
         btnPedirFirma.addActionListener(this);
         btnPedirFirma.setBounds(50,440,300,40);
         btnPedirFirma.setFont(new Font("Verdana", Font.PLAIN, 14));
@@ -138,7 +92,6 @@ class VistaCliente extends JFrame implements ActionListener {
         resultado2.setBounds(50,500,320,60);
         resultado2.setFont(new Font("Verdana", Font.PLAIN, 14));
         add(resultado2);
-
     }
 
 
@@ -148,6 +101,7 @@ class VistaCliente extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+
         if (e.getSource() == btnBuscar) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -156,7 +110,7 @@ class VistaCliente extends JFrame implements ActionListener {
 
             if (result != JFileChooser.CANCEL_OPTION) {
 
-                File fileName = fileChooser.getSelectedFile();
+                fileName = fileChooser.getSelectedFile();
 
                 if ((fileName == null) || (fileName.getName().equals(""))) {
                     txt.setText("...");
@@ -167,129 +121,26 @@ class VistaCliente extends JFrame implements ActionListener {
                         Reader targetReader = new FileReader(fileName);
                         BufferedReader fich = new BufferedReader(targetReader);
                         String cadena;
-                        int i = 0;
                         while ((cadena = fich.readLine()) != null) {
-                           archivo+=cadena;
+                            archivo+=cadena;
                         }
+                        fich.close();
                     }catch (Exception ex){}
 
-
-                //    System.out.println(txt.toString());
-                    //System.out.println(archivo.length);
                 }
             }
-        }
-
-        if (radio.isSelected()) {
-            radio2.setSelected(false);
-         //   btnGenRSA.setEnabled(true);
-
-            btnGenRSA2.setEnabled(false);
-
-            if (e.getSource() == btnGenRSA) {
-                client.initialRSA();
-            }
-        }
-
-        if (radio2.isSelected()) {
-            radio.setSelected(false);
-
-            if (e.getSource() == btnBuscarE) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                String cadena;
-                long ultima;
-
-                int result = fileChooser.showOpenDialog(this);
-
-                if (result != JFileChooser.CANCEL_OPTION) {
-
-                    File fileName = fileChooser.getSelectedFile();
-
-                    if ((fileName == null) || (fileName.getName().equals(""))) {
-                        claveE.setText("...");
-                    } else {
-                        // Con esto leemos el contenido de la clave
-                        try {
-//                            String privateKeyContent = new String(Files.readAllBytes(fileName.toPath()));
-//                            privateKeyContent = privateKeyContent.replaceAll("\\n", "").replace("-----BEGIN RSA PRIVATE KEY-----", "").replace("-----END RSA PRIVATE KEY-----", "");
-//                            keyE=privateKeyContent;
-//                            System.out.println(keyE);
-
-
-                            claveE.setText(fileName.getAbsolutePath());
-                            fileName.createNewFile();
-                            Reader targetReader = new FileReader(fileName);
-                            BufferedReader b = new BufferedReader(targetReader);
-                            ultima = b.lines().count();
-                            targetReader=new FileReader(fileName);
-                            b = new BufferedReader(targetReader);
-                            int i=0;
-                            while ((cadena = b.readLine()) != null) {
-                                if (i==0){
-                                    if (!cadena.equals("-----BEGIN RSA PRIVATE KEY-----"))
-                                        resultado.setText("Llave incorrecta (Debe ser RSA)");
-                                }
-                                if (i>2 && i< ultima-1)
-                                    keyE+=cadena;
-                                i++;
-                            }
-                            System.out.println("keyE: " + keyE);
-                            b.close();
-                        } catch (Exception ex) {
-                            System.out.println("Algo ha ido mal con el fichero");
-                        }
-                    }
-                }
-            }
-
-            if (e.getSource() == btnBuscarD) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                String cadena;
-                long ultima;
-
-                int result = fileChooser.showOpenDialog(this);
-
-                if (result != JFileChooser.CANCEL_OPTION) {
-
-                    File fileName = fileChooser.getSelectedFile();
-
-                    if ((fileName == null) || (fileName.getName().equals(""))) {
-                        claveD.setText("...");
-                    } else {
-                        // Con esto leemos el contenido de la clave
-                        try {
-                            claveD.setText(fileName.getAbsolutePath());
-                            fileName.createNewFile();
-                            Reader targetReader = new FileReader(fileName);
-                            BufferedReader b = new BufferedReader(targetReader);
-                            ultima = b.lines().count();
-                            targetReader=new FileReader(fileName);
-                            b = new BufferedReader(targetReader);
-                            int i=0;
-                            while ((cadena = b.readLine()) != null) {
-                                if (i>0 && i< ultima-1)
-                                    keyD+=cadena;
-                                i++;
-                            }
-                            b.close();
-                        } catch (Exception ex) {
-                            System.out.println("Algo ha ido mal con el fichero");
-                        }
-
-                    }
-                }
-            }
-
-            if (e.getSource() == btnGenRSA2) {
-                client.initialRSA(keyE, keyD);
-            }
-
         }
 
         if(e.getSource() == btnPedirFirma) {
-            if(client.blindProcess(archivo)){
+            /*if(client.blindProcess(archivo)){
+                resultado.setText("Documento firmado. Guardado en: ");
+                resultado2.setText(client.getPathFile());
+            }else{
+                resultado.setText("No se ha podido firmar.");
+            }
+            */
+
+            if(client.blindProcess(fileName)){
                 resultado.setText("Documento firmado. Guardado en: ");
                 resultado2.setText(client.getPathFile());
             }else{

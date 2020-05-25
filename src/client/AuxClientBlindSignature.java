@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Base64;
 
 /**
@@ -69,11 +70,28 @@ public class AuxClientBlindSignature {
      * @return Fichero firmado
      * @throws IOException
      */
-    public byte[] enviaFichero(byte[] fichero) throws IOException {
+    public ArrayList<byte[]> enviaFichero(ArrayList<byte[]> fichero) throws IOException {
         enviaPeticion(ENVIA_FICHERO);
-     //   System.out.println("FICHERO ------------------ > "+new BigInteger(fichero));
-        mySocket.sendMessage(fichero,0,fichero.length);
-        return mySocket.receiveMessage();
+
+        // Num bloc
+        byte[] encodedString = Base64.getEncoder().encodeToString(String.valueOf(fichero.size()).getBytes()).getBytes();
+        System.out.println(fichero.size()+" + "+encodedString);
+
+        mySocket.sendMessage(encodedString,0,encodedString.length);
+
+        ArrayList<byte[]> firmados = new ArrayList<byte[]>();
+
+        for(int i =0; i<fichero.size();i++) {
+            mySocket.sendMessage(fichero.get(i),0,fichero.get(i).length);
+        }
+        for(int i =0; i<fichero.size();i++) {
+            firmados.add(mySocket.receiveMessage());
+        }
+        return firmados;
+
+        //   System.out.println("FICHERO ------------------ > "+new BigInteger(fichero));
+        //mySocket.sendMessage(fichero,0,fichero.length);
+        // return mySocket.receiveMessage();
     }
 
     public void finaliza() throws IOException {
