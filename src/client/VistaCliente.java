@@ -485,9 +485,11 @@ class VistaCliente extends JFrame implements ActionListener {
 
                 documentos.add(fileName0); documentos.add(fileName1); documentos.add(fileName2); documentos.add(fileName3); documentos.add(fileName4);
                 documentos.add(fileName5); documentos.add(fileName6); documentos.add(fileName7); documentos.add(fileName8); documentos.add(fileName9);
-
-                client.blindProcessPartial(documentos);
-
+               
+                if( client.blindProcessPartial(documentos)) {
+                    resultado.setText("Documento firmado. Guardado en: ");
+                    resultado2.setText(client.getPathFile());
+                }
                 //Supongo que habra que enviar la lista al cliente para meterle un elemento igual a todos y despues calcular el hash
                 //System.out.println("HOLA");
 
