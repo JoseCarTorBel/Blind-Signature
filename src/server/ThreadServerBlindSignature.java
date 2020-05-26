@@ -10,12 +10,19 @@ import java.util.Random;
 public class ThreadServerBlindSignature implements Runnable {
     MyStreamSocket myDataSocket;
 
-    private String 	PIDE_E = "0",
+    /*private String 	PIDE_E = "0",
             RECIBE_FICHERO = "1",
             RECIBE_FICHEROS = "2",
             PIDE_N="3",
             PIDE_J="4";
-
+     */
+    
+    private BigInteger 	PIDE_E = BigInteger.ZERO,
+            RECIBE_FICHERO = BigInteger.ONE,
+            RECIBE_FICHEROS = BigInteger.valueOf(2),
+            PIDE_N=BigInteger.valueOf(3),
+            PIDE_J=BigInteger.valueOf(4);
+    
     /**
      * Número de bytes que varían en los ficheros, es aleatorio.
      */
@@ -33,11 +40,11 @@ public class ThreadServerBlindSignature implements Runnable {
     public void run() {
 
         boolean done = false;
-        byte[] op;
+
+        BigInteger opcion;
         try {
             while (!done) {
-                op = Base64.getDecoder().decode(myDataSocket.receiveMessage());
-                String opcion = new String(op);
+            	opcion = new BigInteger(myDataSocket.receiveMessage());
                 System.out.println("[SERVER]\tOpcion recibida " + opcion);
 
 

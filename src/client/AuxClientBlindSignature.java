@@ -18,14 +18,22 @@ public class AuxClientBlindSignature {
     private MyStreamSocket mySocket;
     private InetAddress serverHost;
     private int serverPort;
-
+    /*
     private String 	PEDIR_E="0",
             ENVIA_FICHERO="1",
             ENVIA_FICHEROS="2",
             PEDIR_N="3",
             PEDIR_J="4",
             FINALIZA="5";
-
+	*/
+    private BigInteger 	PEDIR_E=BigInteger.ZERO,
+            ENVIA_FICHERO=BigInteger.ONE,
+            ENVIA_FICHEROS=BigInteger.valueOf(2),
+            PEDIR_N=BigInteger.valueOf(3),
+            PEDIR_J=BigInteger.valueOf(4),
+            FINALIZA=BigInteger.valueOf(5);
+    
+    
     AuxClientBlindSignature(String hostName, String portNum) {
         try{
             serverHost = InetAddress.getByName(hostName);
@@ -48,11 +56,13 @@ public class AuxClientBlindSignature {
     }
 
     // ******** IMPLEMENTACIÓN DE LA FIRMA TOTALMENTE CIEGA *******
-    private void enviaPeticion(String peticion) throws IOException {
-        byte[] encodedString = Base64.getEncoder().encodeToString(peticion.getBytes()).getBytes();
-        mySocket.sendMessage(encodedString,0,encodedString.length);
+    
+    private void enviaPeticion(BigInteger peticion) throws IOException {
+    	byte[] m = peticion.toByteArray();
+    	mySocket.sendMessage(m, 0, m.length);
     }
-
+    
+    
     /**
      * @return Devuelve el la E del servidor
      * @throws IOException

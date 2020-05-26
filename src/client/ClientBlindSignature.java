@@ -113,6 +113,7 @@ public class ClientBlindSignature {
 	        for(int i=0;i<ficheros.size(); i++) {
 	    		
 	    		fich=creaHashFichero(ficheros.get(i));
+	    		//System.out.println(new BigInteger(fich));
 	    		
 	    		files.add(fich);
 	    		
@@ -306,7 +307,7 @@ public class ClientBlindSignature {
 
 
     /**
-     * Creación del hash del fichero.
+     * Creaciï¿½n del hash del fichero.
      * @param fichero
      * @return
      * @throws NoSuchAlgorithmException

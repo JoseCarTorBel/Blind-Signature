@@ -471,13 +471,7 @@ class VistaCliente extends JFrame implements ActionListener {
 
 
         if(e.getSource() == btnPedirFirma) {
-            /*if(client.blindProcess(archivo)){
-                resultado.setText("Documento firmado. Guardado en: ");
-                resultado2.setText(client.getPathFile());
-            }else{
-                resultado.setText("No se ha podido firmar.");
-            }
-            */
+ 
             documentos = new ArrayList<File>();
 
             if(fileName0!=null && fileName1!=null && fileName2!=null && fileName3!=null && fileName4!=null && fileName5!=null
@@ -489,15 +483,17 @@ class VistaCliente extends JFrame implements ActionListener {
                 if( client.blindProcessPartial(documentos)) {
                     resultado.setText("Documento firmado. Guardado en: ");
                     resultado2.setText(client.getPathFile());
+                }else {
+                    resultado.setText("No se ha podido firmar. Comprueba");
                 }
-                //Supongo que habra que enviar la lista al cliente para meterle un elemento igual a todos y despues calcular el hash
-                //System.out.println("HOLA");
 
             } else if (fileName0==null && fileName1==null && fileName2==null && fileName3==null && fileName4==null && fileName5==null
                     && fileName6==null && fileName7==null&& fileName8==null && fileName9==null && fileName!=null){
                 if(client.blindProcess(fileName)) {
                     resultado.setText("Documento firmado. Guardado en: ");
                     resultado2.setText(client.getPathFile());
+                }else {
+                    resultado.setText("No se ha podido firmar. Comprueba");
                 }
             } else {
                 resultado.setText("No se ha podido firmar. Comprueba");
