@@ -271,16 +271,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt1.setText("...");
                 } else {
                     txt1.setText(fileName1.getAbsolutePath());
-                    client.pathFile(fileName1.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName1);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -294,16 +284,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt2.setText("...");
                 } else {
                     txt2.setText(fileName2.getAbsolutePath());
-                    client.pathFile(fileName2.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName2);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -317,16 +297,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt3.setText("...");
                 } else {
                     txt3.setText(fileName3.getAbsolutePath());
-                    client.pathFile(fileName3.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName3);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -340,16 +310,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt4.setText("...");
                 } else {
                     txt4.setText(fileName4.getAbsolutePath());
-                    client.pathFile(fileName4.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName4);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -363,16 +323,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt5.setText("...");
                 } else {
                     txt5.setText(fileName5.getAbsolutePath());
-                    client.pathFile(fileName5.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName5);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -386,16 +336,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt6.setText("...");
                 } else {
                     txt6.setText(fileName6.getAbsolutePath());
-                    client.pathFile(fileName6.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName6);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -410,15 +350,6 @@ class VistaCliente extends JFrame implements ActionListener {
                 } else {
                     txt7.setText(fileName7.getAbsolutePath());
                     client.pathFile(fileName7.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName7);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -432,16 +363,6 @@ class VistaCliente extends JFrame implements ActionListener {
                     txt8.setText("...");
                 } else {
                     txt8.setText(fileName8.getAbsolutePath());
-                    client.pathFile(fileName8.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName8);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
                 }
             }
         }
@@ -454,24 +375,14 @@ class VistaCliente extends JFrame implements ActionListener {
                 if ((fileName9 == null) || (fileName9.getName().equals(""))) {
                     txt9.setText("...");
                 } else {
-                    txt9.setText(fileName9.getAbsolutePath());
-                    client.pathFile(fileName9.toPath());
-                    try {
-                        Reader targetReader = new FileReader(fileName9);
-                        BufferedReader fich = new BufferedReader(targetReader);
-                        String cadena;
-                        while ((cadena = fich.readLine()) != null) {
-                            archivo+=cadena;
-                        }
-                        fich.close();
-                    }catch (Exception ex){}
+                    txt9.setText(fileName9.getAbsolutePath());                  
                 }
             }
         }
 
 
         if(e.getSource() == btnPedirFirma) {
- 
+      
             documentos = new ArrayList<File>();
 
             if(fileName0!=null && fileName1!=null && fileName2!=null && fileName3!=null && fileName4!=null && fileName5!=null
