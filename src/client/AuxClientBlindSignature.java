@@ -19,7 +19,12 @@ public class AuxClientBlindSignature {
     private InetAddress serverHost;
     private int serverPort;
 
-    private String PEDIR_E="0",ENVIA_FICHERO="1",ENVIA_FICHEROS="2",PEDIR_N="3",FINALIZA="4";
+    private String 	PEDIR_E="0",
+            ENVIA_FICHERO="1",
+            ENVIA_FICHEROS="2",
+            PEDIR_N="3",
+            PEDIR_J="4",
+            FINALIZA="5";
 
     AuxClientBlindSignature(String hostName, String portNum) {
         try{
@@ -62,6 +67,10 @@ public class AuxClientBlindSignature {
         return mySocket.receiveMessage();
     }
 
+    public byte[] pideJ( ) throws IOException {
+        enviaPeticion(PEDIR_J);
+        return mySocket.receiveMessage();
+    }
 
 
     /**
@@ -70,28 +79,12 @@ public class AuxClientBlindSignature {
      * @return Fichero firmado
      * @throws IOException
      */
-    public ArrayList<byte[]> enviaFichero(ArrayList<byte[]> fichero) throws IOException {
+    public byte[] enviaFichero(byte[] fichero) throws IOException {
         enviaPeticion(ENVIA_FICHERO);
 
-        // Num bloc
-        byte[] encodedString = Base64.getEncoder().encodeToString(String.valueOf(fichero.size()).getBytes()).getBytes();
-        System.out.println(fichero.size()+" + "+encodedString);
-
-        mySocket.sendMessage(encodedString,0,encodedString.length);
-
-        ArrayList<byte[]> firmados = new ArrayList<byte[]>();
-
-        for(int i =0; i<fichero.size();i++) {
-            mySocket.sendMessage(fichero.get(i),0,fichero.get(i).length);
-        }
-        for(int i =0; i<fichero.size();i++) {
-            firmados.add(mySocket.receiveMessage());
-        }
-        return firmados;
-
-        //   System.out.println("FICHERO ------------------ > "+new BigInteger(fichero));
-        //mySocket.sendMessage(fichero,0,fichero.length);
-        // return mySocket.receiveMessage();
+        System.out.println("FICHERO ------------------ > "+new BigInteger(fichero));
+        mySocket.sendMessage(fichero,0,fichero.length);
+        return mySocket.receiveMessage();
     }
 
     public void finaliza() throws IOException {
@@ -101,4 +94,21 @@ public class AuxClientBlindSignature {
 
     public String getHostAndPort(){
         return serverHost+" en puerto "+serverPort;    }
+
+
+
+
+
+    public byte[] enviaFicheros(ArrayList<byte[]> x, ArrayList<byte[]> k, ArrayList<byte[]> ficheros, int j) throws IOException {
+        enviaPeticion(ENVIA_FICHEROS);
+        for(int i=0; i<x.size();i++) {
+            if(i!=j) {
+                mySocket.sendMessage(x.get(i),0,x.get(i).length);
+                mySocket.sendMessage(ficheros.get(i),0,ficheros.get(i).length);
+                mySocket.sendMessage(k.get(i),0,k.get(i).length);
+            }
+        }
+        return mySocket.receiveMessage();
+    }
+
 }
